@@ -12,34 +12,26 @@ rm(list = ls())
 ###############################################################################
 
 # make empty array to fill
-moths <- array(data = NA, dim = c(393,368,25), dimnames = NULL)
+moths <- array(data = NA, dim = c(393,365,25), dimnames = NULL)
 
-# species list with (id,BF,Name)
-indexlist <- read.csv("../Data/Moths/Speciesindexlist.csv", header=T)
-
-id <- as.numeric(indexlist[,1])
-BF <- as.character(indexlist[,2])
-Species <- as.character(indexlist[,3])
+# species_df is list of all species with id BF and common name
+species_df  <- read.csv("../Data/Moths/Speciesindexlist.csv", header=T)
+colnames(species_df) <-  c('id', 'BF', 'common_name')
 
 for(yr in 1:25){
 
     # read in the .csv files for all years (1990-2014)
     dat <- read.csv(paste('../Data/Moths/Moths', yr+1989, '.csv', sep=''),
                     header=F)
+    # the days where traps were put out
     julianday <- as.numeric(dat[1,4:(dim(dat)[2])])
     dat[is.na(dat)] <- 0  # replace NAs with 0s
     dat <- dat[-1,]  # get rid of top row (column headings)
 
-    for(s in 1:393){  # for all species populate Moths with index and name
-        moths[s, 1, yr] <- id[s]
-        moths[s, 2, yr] <- BF[s]
-        moths[s, 3, yr] <- Species[s]
-    }
-
     # now add the species counts to the correct days
     for(d in 1:length(julianday)){
         day <- julianday[d]  # the day
-        moths[dat$V1, day+3, yr] <- dat[,d+3]  # put in moths
+        moths[dat$V1, day, yr] <- dat[,d+3]  # put in moths
     }
 }
 
@@ -48,25 +40,26 @@ zero_days <- read.csv('../Data/Moths/zero_days.csv')
 
 for (yr in 1:25){  # for 1990-2014
   for (d in 1:sum(!is.na(zero_days[,yr])))  # take the days that had 0 moths
-    moths[,zero_days[d,yr]+3,yr] <- 0  # and put 0's in that day for Moths
+    moths[,zero_days[d,yr],yr] <- 0  # and put 0's in that day for Moths
 }
 
+rownames(moths) <- species_df$id
+
 # cleanup
-rm(dat, day, zero_days, indexlist, BF, Species, d, id, julianday, s, yr)
+rm(dat, day, zero_days, d, julianday, yr)
 
 
 ###############################################################################
 # moths Summary - yearly totals
 ###############################################################################
 
-msummary <- matrix(nrow=393, ncol=28)
-
-msummary[,1:3] <- moths[,1:3,1]
+msummary <- matrix(nrow=393, ncol=25)
+rownames(msummary) <- species_df$id
 
 for(s in 1:393){
     for(yr in 1:25){
         # total of each species for each year
-        msummary[s,yr+3] <- sum(as.numeric(moths[s,4:368,yr]),na.rm=TRUE)
+        msummary[s,yr] <- sum(as.numeric(moths[s,1:365,yr]),na.rm=TRUE)
     }
 }
 

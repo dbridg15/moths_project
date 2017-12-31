@@ -1,9 +1,11 @@
 moths_project
 │
-├── Code----------------------------------needs sorting!
+├── Code
 │   │
 │   ├── 0_extract_mean_temp.py------------python script to extract data from
 │   │                                     required grid squares
+│   │
+│   ├── 0_run_moths_project.R-------------sources all R scripts
 │   │
 │   ├── 1-read_in_data.R------------------reads in moth and climate data
 │   │
@@ -12,23 +14,27 @@ moths_project
 │   ├── 3_adjusting_abundance.R-----------adjusts FFD/LFD by sampling to least
 │   │                                     abundant year
 │   │
-│   ├── 3Classification!.R
-│   ├── aaFlight Period.R
-│   ├── Classification!.R
-│   ├── Classification.R
-│   ├── Example species figure.R
-│   ├── Figures.R
-│   ├── Flight Period.R
-│   ├── Model-DAVID.R
-│   ├── Model.R
-│   ├── phenology hypothesis.R
-│   ├── Season plot-DAVID.R
-│   ├── Season plot.R
-│   ├── Seasons.R
-│   ├── seasontemp and number.R
-│   ├── Sensitivity.R
-│   └── shcplot.R
-│
+│   ├── 4_species_classifications.R-------classifies species into season
+│   │
+│   ├──Legacy-----------------------------contains old code still to be sorted
+│   │   │
+│   │   ├── 3Classification!.R
+│   │   ├── aaFlight Period.R
+│   │   ├── Classification!.R
+│   │   ├── Classification.R
+│   │   ├── Example species figure.R
+│   │   ├── Figures.R
+│   │   ├── Flight Period.R
+│   │   ├── Model-DAVID.R
+│   │   ├── Model.R
+│   │   ├── phenology hypothesis.R
+│   │   ├── Season plot-DAVID.R
+│   │   ├── Season plot.R
+│   │   ├── Seasons.R
+│   │   ├── seasontemp and number.R
+│   │   ├── Sensitivity.R
+│   │   └── shcplot.R
+│   │
 ├── Data
 │   │
 │   ├── Climate--------------------------contains all climate data

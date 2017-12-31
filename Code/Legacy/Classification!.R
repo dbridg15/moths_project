@@ -68,22 +68,28 @@ toby
 #Classifications------------------------------------------------
 
 
-colfunc <- colorRampPalette(c("green", "yellow", "red", "blue"))
+# colfunc <- colorRampPalette(c("green", "yellow", "red", "blue"))
 
-seasons <- c("early_spring","late_spring","early_summer","late_summer","early_autumn","late_autumn","early_winter","late_winter","spring","summer","autumn","winter","spring/summer","summer/autumn","autumn/winter","winter/spring")
+seas_list <- c("early_spring","late_spring","early_summer","late_summer",
+               "early_autumn","late_autumn","early_winter","late_winter",
+               "spring","summer","autumn","winter","spring/summer",
+               "summer/autumn","autumn/winter","winter/spring")
 first <- c(60,107,152,199,244,290,335,1,60,152,244,335,60,152,244,1)
 last <- c(106,151,198,243,289,334,365,59,151,243,334,59,243,334,365,151)
-colour <- c(colfunc(16)[1], colfunc(16)[3], colfunc(16)[5], colfunc(16)[7], colfunc(16)[9], colfunc(16)[11], colfunc(16)[13], colfunc(16)[15], colfunc(16)[2], colfunc(16)[6], colfunc(16)[10], colfunc(16)[14], colfunc(16)[4], colfunc(16)[8], colfunc(16)[12], colfunc(16)[16])
+# colour <- c(colfunc(16)[1], colfunc(16)[3], colfunc(16)[5], colfunc(16)[7],
+#             colfunc(16)[9], colfunc(16)[11], colfunc(16)[13], colfunc(16)[15],
+#             colfunc(16)[2], colfunc(16)[6], colfunc(16)[10], colfunc(16)[14],
+#             colfunc(16)[4], colfunc(16)[8], colfunc(16)[12], colfunc(16)[16])
 pos <- c(1,3,5,7,9,11,13,15,2,6,10,14,4,8,12,16)
 
-ron <- data.frame(seasons, first, last, colour, pos)
+seasons <- data.frame(seas_list, first, last, pos)
 
-ron
+seasons
 
 
 class <- matrix(nrow=110,ncol=4)
 
-colnames(class) <- c("12.5%", "87.5%", "Season 75%","Colour")
+colnames(class) <- c("12.5%", "87.5%", "Season 75%")
 
 for(id in 1:110){
   class[id,1] <- quantile(toby[[id]],c(.125,.875))[1]

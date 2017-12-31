@@ -12,14 +12,15 @@
 aaflight1 <- array(data = NA, dim = c(nrow(flight1),4,25), dimnames = NULL)
 
 colnames(aaflight1) <- c("aaFFD", "aaLFD", "aaFP", "aaFPos")
+rownames(aaflight1) <- selspc_df$id
 
-for(id in 1:nrow(flight1)){
+for(id in as.character(selspc_df$id)){
 
     # list of empty vectors to put in flight days for all years
     FDlist <- rep( list(c()), 25)
 
     for(yr in 1:25){
-        temp <- as.numeric(moths1[id,4:368,yr])  # how many flew on each day
+        temp <- as.numeric(moths1[id,,yr])  # how many flew on each day
         temp[is.na(temp)] <- 0  # no flights (NA) is 0
         temp1 <- c()
 
@@ -36,14 +37,14 @@ for(id in 1:nrow(flight1)){
 
     # row - 200 = number of samples
     # columns - as many as the lowest count year (above the threshold X)
-    minsize <- sort(as.numeric(msummary1[id,4:28])
-                    )[which(sort(as.numeric(msummary1[id,4:28])) >X)[1]]
+    minsize <- sort(as.numeric(msummary1[id,])
+                    )[which(sort(as.numeric(msummary1[id, ])) >X)[1]]
     # z - 25 = years
     FDRarf <- array(data = NA, dim = c(200, minsize, 25), dimnames = NULL)
 
     for(yr in 1:25){
         # if the species was seen enough in teh year
-        if(as.numeric(msummary1[id,yr+3]) > X){
+        if(as.numeric(msummary1[id,yr]) > X){
             for (i in 1:200){  # do 200 times
                 # sample the year to the size of the least abundant
                 FDRarf[i,,yr] <- sort(sample(FDlist[[yr]], size = minsize,
@@ -75,7 +76,7 @@ for(id in 1:nrow(flight1)){
     # put NAs in yrs and for species where they are NA in flight1 i.e. that
     # year did not meet inclusion criteria
     for(yr in 1:25){
-        aaflight1[which(is.na(flight1[,4,yr])),,yr] <- NA
+        aaflight1[which(is.na(flight1[,1,yr])),,yr] <- NA
     }
 }
 
