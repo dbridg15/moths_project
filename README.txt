@@ -3,7 +3,7 @@ moths_project
 ├── Code----------------------------------needs sorting!
 │   │
 │   ├── 0_extract_mean_temp.py------------python script to extract data from
-│   │                                         required grid squares
+│   │                                     required grid squares
 │   │
 │   ├── 1-read_in_data.R------------------reads in moth and climate data
 │   │
