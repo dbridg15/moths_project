@@ -1,9 +1,18 @@
 moths_project
 │
 ├── Code----------------------------------needs sorting!
-│   ├── 1-Reading in data.R
-│   ├── 2-Sorting out hypothesis data.R
-│   ├── 3 - Classification!.R
+│   │
+│   ├── 0_extract_mean_temp.py------------python script to extract data from
+│   │                                         required grid squares
+│   │
+│   ├── 1-read_in_data.R------------------reads in moth and climate data
+│   │
+│   ├── 2_sorting_data.R------------------sorts data ready for analysis
+│   │
+│   ├── 3_adjusting_abundance.R-----------adjusts FFD/LFD by sampling to least
+│   │                                     abundant year
+│   │
+│   ├── 3Classification!.R
 │   ├── aaFlight Period.R
 │   ├── Classification!.R
 │   ├── Classification.R
@@ -24,22 +33,6 @@ moths_project
 │   │
 │   ├── Climate--------------------------contains all climate data
 │   │   │
-│   │   ├── Daily_CET.csv----------------daily CET from 1772-201
-│   │   │
-│   │   ├── Daily_CET_Max.csv------------daily Max CET from 1878-2014
-│   │   │
-│   │   ├── Daily_CET_Min.csv------------daily Min CET from 1878-2014
-│   │   │
-│   │   ├── MaxTemp_1.csv--------------⎤
-│   │   ├── MaxTemp_2.csv--------------⎥
-│   │   ├── MaxTemp_3.csv--------------⎥
-│   │   ├── MaxTemp_4.csv--------------⎥
-│   │   ├── MaxTemp_5.csv--------------⎬ max daily temp at each grid square
-│   │   ├── MaxTemp_6.csv--------------⎥
-│   │   ├── MaxTemp_7.csv--------------⎥
-│   │   ├── MaxTemp_8.csv--------------⎥
-│   │   ├── MaxTemp_9.csv--------------⎦
-│   │   │
 │   │   ├── MeanTemp_1.csv-------------⎤
 │   │   ├── MeanTemp_2.csv-------------⎥
 │   │   ├── MeanTemp_3.csv-------------⎥
@@ -48,27 +41,9 @@ moths_project
 │   │   ├── MeanTemp_6.csv-------------⎥
 │   │   ├── MeanTemp_7.csv-------------⎥
 │   │   ├── MeanTemp_8.csv-------------⎥
-│   │   ├── MeanTemp_9.csv-------------⎦
-│   │   │
-│   │   ├── MinTemp_1.csv--------------⎤
-│   │   ├── MinTemp_2.csv--------------⎥
-│   │   ├── MinTemp_3.csv--------------⎥
-│   │   ├── MinTemp_4.csv--------------⎥
-│   │   ├── MinTemp_5.csv--------------⎬ min daily temp at each grid square
-│   │   ├── MinTemp_6.csv--------------⎥
-│   │   ├── MinTemp_7.csv--------------⎥
-│   │   ├── MinTemp_8.csv--------------⎥
-│   │   ├── MinTemp_9.csv--------------⎦
-│   │   │
-│   │   ├── Rainfall_1.csv-------------⎤
-│   │   ├── Rainfall_2.csv-------------⎥
-│   │   ├── Rainfall_3.csv-------------⎥
-│   │   ├── Rainfall_4.csv-------------⎥
-│   │   ├── Rainfall_5.csv-------------⎬ monthly rainfall at each grid square
-│   │   ├── Rainfall_6.csv-------------⎥
-│   │   ├── Rainfall_7.csv-------------⎥
-│   │   ├── Rainfall_8.csv-------------⎥
-│   │   └── Rainfall_9.csv-------------⎦
+│   │   └── MeanTemp_9.csv-------------⎦
+│   │
+│   ├── Climate_Source-------------------RAW climate data (in .gitignore)
 │   │
 │   └── Moths----------------------------contains all moth filght data
 │       │
