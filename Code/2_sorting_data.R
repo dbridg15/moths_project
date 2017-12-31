@@ -20,20 +20,19 @@ if(exists("Q") == FALSE) { Q <- 10 }  # Threshold number of Days (for cons)
 # flight - first flight day, last flight day, flight period for each species
 ###############################################################################
 
-flight <- array(data = NA, dim = c(393,3,25), dimnames = NULL)
+flight <- array(data = NA, dim = c(393,4,25), dimnames = NULL)
 
-colnames(flight) <- c('FFD','LFD','FP')
+colnames(flight) <- c('FFD','LFD','FP','Fpos')
 
 for (yr in 1:25){  # for 25 years of moth data
     for (id in 1:393){  # and all 393 species
         # list of days where species was seen
         FlightDays  <- which(moths[id,4:368,yr] > 0)
         if(length(FlightDays) > X){  # if there are enough to calculate from
-            flight[id,1,yr] <- (mean(FlightDays[1:X]))
-            flight[id,2,yr] <- (mean(FlightDays[(length(FlightDays)-(X-1)):
-                                     (length(FlightDays))]))
-            flight[id,3,yr] <- (as.numeric(flight[id,2,yr]) -
-                                as.numeric(flight[id,1,yr]))
+            flight[id,1,yr] <- mean(FlightDays[1:X])
+            flight[id,2,yr] <- mean(FlightDays[(length(FlightDays)-(X-1)):(length(FlightDays))])
+            flight[id,3,yr] <- as.numeric(flight[id,2,yr]) - as.numeric(flight[id,1,yr])
+            flight[id,4,yr] <- mean(flight[id,1:2,yr])
         }
     }
 }
@@ -65,10 +64,10 @@ for (id in 1:393){
 selspc <- which(selspc > 0)
 
 # flight1 FFD, LFD, FP for selected speecies for all years
-flight1 <- array(data = NA, dim = c(length(which(selspc > 0)),6,25),
+flight1 <- array(data = NA, dim = c(length(which(selspc > 0)),7,25),
                  dimnames = NULL)
 
-colnames(flight1) <- c('id','BF','common','FFD','LFD','FP')
+colnames(flight1) <- c('id','BF','common','FFD','LFD','FP','Fpos')
 
 # species ids
 flight1[,1,] <- selspc
@@ -84,6 +83,7 @@ for (yr in 1:25){
         flight1[which(selspc == i),4,yr] <- flight[i,1,yr]
         flight1[which(selspc == i),5,yr] <- flight[i,2,yr]
         flight1[which(selspc == i),6,yr] <- flight[i,3,yr]
+        flight1[which(selspc == i),7,yr] <- flight[i,4,yr]
     }
 }
 
