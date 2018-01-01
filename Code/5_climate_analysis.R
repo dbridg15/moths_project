@@ -4,6 +4,8 @@
 # Desc: analysis of climate data
 # Author: David Bridgwood (dmb2417@ic.ac.uk)
 
+# packages
+require('ggplot2')
 
 ###############################################################################
 # making temperatures data frame
@@ -29,21 +31,25 @@ for(yr in 2:55){
     temperatures$winter[yr] <- mean(c(dtemp[335:356,yr-1], dtemp[1:59, yr]))
 }
 
-rm(i, yr)
+#add cons
+temperatures$cons <- cons
+
+rm(i, yr, cons)
 
 
 ###############################################################################
 # is temperature changing?
 ###############################################################################
 
+# ****if you get more time do for only 1990-2014****
 # get some numbers
 
-temperature_analysis <- data.frame('time_period' =colnames(temperatures)[2:18])
+temperature_analysis <- data.frame('time_period' =colnames(temperatures)[2:19])
 temperature_analysis$slope <- NA
 temperature_analysis$p_val <- NA
 temperature_analysis$r_sqr <- NA
 
-for(i in 2:18){
+for(i in 2:19){
     mdl <- lm(as.numeric(unlist(temperatures[i])) ~ temperatures$year)
     temperature_analysis$slope[i-1] <- as.numeric(coef(mdl)[2])  # slope
     temperature_analysis$p_val[i-1] <- as.numeric(anova(mdl)$'Pr(>F)'[1]) # p-value
@@ -51,11 +57,11 @@ for(i in 2:18){
 }
 
 # plots
-if(PLOTS){
+if(PLOTS == TRUE){
 
 pdf("../Results/temperature_plots.pdf", width = 10, height = 7.5)
 
-for(i in 2:18){
+for(i in 2:19){
     print(qplot(temperatures$year, temperatures[i], xlab = "Years",
             ylab = paste("Mean Temperature", colnames(temperatures)[i])) +
             theme_classic() +
@@ -69,4 +75,4 @@ dev.off()
 
 }
 
-rm(i)
+rm(i, mdl)

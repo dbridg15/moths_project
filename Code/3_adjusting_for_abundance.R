@@ -11,7 +11,7 @@
 
 aaflight1 <- array(data = NA, dim = c(nrow(flight1),4,25), dimnames = NULL)
 
-colnames(aaflight1) <- c("aaFFD", "aaLFD", "aaFP", "aaFPos")
+colnames(aaflight1) <- c("FFD", "LFD", "FP", "Fpos")
 rownames(aaflight1) <- selspc_df$id
 
 for(id in as.character(selspc_df$id)){

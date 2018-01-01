@@ -4,6 +4,8 @@
 # Desc: runs the project
 # Author: David Bridgwood (dmb2417@ic.ac.uk)
 
+rm(list = ls())
+
 
 ###############################################################################
 #
@@ -21,3 +23,5 @@ source("3_adjusting_for_abundance.R")
 source("4_species_classifications.R")
 
 source("5_climate_analysis.R")
+
+source("6_effect_on_moths.R")

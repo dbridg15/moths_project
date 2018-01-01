@@ -4,8 +4,6 @@
 # Desc: reads in moth and climate data
 # Author: David Bridgwood (dmb2417@ic.ac.uk)
 
-rm(list = ls())
-
 
 ###############################################################################
 # Making moths - 3D array of all species counts everyday for all 25 years
