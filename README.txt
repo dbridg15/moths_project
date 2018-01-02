@@ -16,25 +16,27 @@ moths_project
 │   │
 │   ├── 4_species_classifications.R-------classifies species into season
 │   │
-│   ├──Legacy-----------------------------contains old code still to be sorted
-│   │   │
-│   │   ├── 3Classification!.R
-│   │   ├── aaFlight Period.R
-│   │   ├── Classification!.R
-│   │   ├── Classification.R
-│   │   ├── Example species figure.R
-│   │   ├── Figures.R
-│   │   ├── Flight Period.R
-│   │   ├── Model-DAVID.R
-│   │   ├── Model.R
-│   │   ├── phenology hypothesis.R
-│   │   ├── Season plot-DAVID.R
-│   │   ├── Season plot.R
-│   │   ├── Seasons.R
-│   │   ├── seasontemp and number.R
-│   │   ├── Sensitivity.R
-│   │   └── shcplot.R
+│   ├── 5_climate_analysis.R--------------analysis of climate data
 │   │
+│   ├── 6_effect_on_moths.R---------------are moths flying earlier/later/longer
+│   │
+│   ├── 7_the_model.R---------------------
+│   │
+│   └──Legacy-----------------------------contains old code still to be sorted
+│       │
+│       ├── aaFlight Period.R
+│       ├── Example species figure.R
+│       ├── Figures.R
+│       ├── Flight Period.R
+│       ├── Model-DAVID.R
+│       ├── Model.R
+│       ├── phenology hypothesis.R
+│       ├── Season plot-DAVID.R
+│       ├── Season plot.R
+│       ├── seasontemp and number.R
+│       ├── Sensitivity.R
+│       └── shcplot.R
+│
 ├── Data
 │   │
 │   ├── Climate--------------------------contains all climate data
