@@ -51,3 +51,53 @@ mdl_df <- mdl_df[-1,]
 ###############################################################################
 # making the model
 ###############################################################################
+
+
+expl <- c("ytemp", "stemp", "winter")
+
+for(i in expl){
+
+# FFD model
+ffdmodel <- lmer(FFD ~ (1|year) + (mdl_df[,i]|id), data = mdl_df)
+summary(ffdmodel)
+
+FFD.fixeff <- fixef(ffdmodel)
+FFD.randeff <- ranef(ffdmodel)
+
+temps <- 7:13
+ffdmr <- vector(length=110)
+
+plot(c(7,13),c(0, 365),type='n', main = paste("FFD: ", i))
+for (s in 1:110){
+  lines(temps, FFD.fixeff[1] + FFD.randeff$id[s,1] +
+        FFD.randeff$id[s,2]*temps, type='l')
+  ffdmr[s] <- coef(lm(FFD.fixeff[1] + FFD.randeff$id[s,1] +
+                      FFD.randeff$id[s,2]*temps~temps))[2]
+}
+
+readline(prompt="Press [enter] to see next plot")
+
+# LFD model
+lfdmodel <- lmer(LFD ~ (1|year) + (mdl_df[, i]|id), data = mdl_df)
+summary(lfdmodel)
+
+LFD.fixeff <- fixef(lfdmodel)
+LFD.randeff <- ranef(lfdmodel)
+
+temps <- 7:13
+lfdmr <- vector(length=110)
+
+plot(c(7,13),c(0, 365),type='n', main = paste("LFD: ", i))
+for (s in 1:110){
+  lines(temps, LFD.fixeff[1] + LFD.randeff$id[s,1] +
+        LFD.randeff$id[s,2]*temps, type='l')
+  lfdmr[s] <- coef(lm(LFD.fixeff[1] + LFD.randeff$id[s,1] +
+                      LFD.randeff$id[s,2]*temps~temps))[2]
+}
+
+readline(prompt="Press [enter] to see next plot")
+
+plot(ffdmr,lfdmr, main = i)
+
+readline(prompt="Press [enter] to see next plot")
+}
