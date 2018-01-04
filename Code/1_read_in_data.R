@@ -12,39 +12,39 @@
 # make empty array to fill
 moths <- array(data = NA, dim = c(393,365,25), dimnames = NULL)
 
-# species_df is list of all species with id BF and common name
-species_df  <- read.csv("../Data/Moths/Speciesindexlist.csv", header=T)
-colnames(species_df) <-  c('id', 'BF', 'common_name')
+# all.spc.df is list of all species with id BF and common name
+all.spc.df  <- read.csv("../Data/Moths/Speciesindexlist.csv", header=T)
+colnames(all.spc.df) <-  c('id', 'BF', 'common_name')
 
-for(yr in 1:25){
+for (yr in 1:25){
 
-    # read in the .csv files for all years (1990-2014)
-    dat <- read.csv(paste('../Data/Moths/Moths', yr+1989, '.csv', sep=''),
-                    header=F)
-    # the days where traps were put out
-    julianday <- as.numeric(dat[1,4:(dim(dat)[2])])
-    dat[is.na(dat)] <- 0  # replace NAs with 0s
-    dat <- dat[-1,]  # get rid of top row (column headings)
+  # read in the .csv files for all years (1990-2014)
+  dat <- read.csv(paste('../Data/Moths/Moths', yr+1989, '.csv', sep=''),
+          header=F)
+  # the days where traps were put out
+  julianday <- as.numeric(dat[1,4:(dim(dat)[2])])
+  dat[is.na(dat)] <- 0  # replace NAs with 0s
+  dat <- dat[-1,]  # get rid of top row (column headings)
 
-    # now add the species counts to the correct days
-    for(d in 1:length(julianday)){
-        day <- julianday[d]  # the day
-        moths[dat$V1, day, yr] <- dat[,d+3]  # put in moths
-    }
+  # now add the species counts to the correct days
+  for (d in 1:length(julianday)){
+    day <- julianday[d]  # the day
+    moths[dat$V1, day, yr] <- dat[,d+3]  # put in moths
+  }
 }
 
 # read in day numbers where 0 moths were seen
-zero_days <- read.csv('../Data/Moths/zero_days.csv')
+zero.days <- read.csv('../Data/Moths/zero_days.csv')
 
 for (yr in 1:25){  # for 1990-2014
-  for (d in 1:sum(!is.na(zero_days[,yr])))  # take the days that had 0 moths
-    moths[,zero_days[d,yr],yr] <- 0  # and put 0's in that day for Moths
+  for (d in 1:sum(!is.na(zero.days[,yr])))  # take the days that had 0 moths
+  moths[ ,zero.days[d, yr], yr] <- 0  # and put 0's in that day for Moths
 }
 
-rownames(moths) <- species_df$id
+rownames(moths) <- all.spc.df$id
 
 # cleanup
-rm(dat, day, zero_days, d, julianday, yr)
+rm(dat, day, zero.days, d, julianday, yr)
 
 
 ###############################################################################
@@ -52,13 +52,13 @@ rm(dat, day, zero_days, d, julianday, yr)
 ###############################################################################
 
 msummary <- matrix(nrow=393, ncol=25)
-rownames(msummary) <- species_df$id
+rownames(msummary) <- all.spc.df$id
 
-for(s in 1:393){
-    for(yr in 1:25){
-        # total of each species for each year
-        msummary[s,yr] <- sum(as.numeric(moths[s,1:365,yr]),na.rm=TRUE)
-    }
+for (s in 1:393){
+  for (yr in 1:25){
+    # total of each species for each year
+    msummary[s, yr] <- sum(as.numeric(moths[s, 1:365, yr]), na.rm = TRUE)
+  }
 }
 
 # cleanup
@@ -69,58 +69,29 @@ rm(s,yr)
 # dtemp (average daily temperature 1960 - 2014)
 ###############################################################################
 
-DailyTemp <- array(data = NA, dim = c(365,55,9), dimnames = NULL)
+Daily.Temp <- array(data = NA, dim = c(365,55,9), dimnames = NULL)
 
 for (cell in 1:9){  # for each of the 9 Grids
 
-    # read in data
-    MeanTemp <- read.csv(paste('../Data/Climate//MeanTemp_', cell, '.csv',
-                            sep=''), header=F)
+  # read in data
+  MeanTemp <- read.csv(paste('../Data/Climate//MeanTemp_', cell, '.csv',
+              sep=''), header=F)
 
-    for (yr in 1:55){  # from 1960-2014 (1:55)o
-        tmp <- subset(MeanTemp, MeanTemp$V3 == (1959 + yr))
-        tmp <- tmp$V6
+  for (yr in 1:55){  # from 1960-2014 (1:55)o
+    tmp <- subset(MeanTemp, MeanTemp$V3 == (1959 + yr))
+    tmp <- tmp$V6
 
-        if(length(tmp) == 366){
-            lpday  <- mean(tmp[59:60])
-            tmp <- c(tmp[1:58], lpday, tmp[61:366])
-        }
+    if (length(tmp) == 366){
+      lpday  <- mean(tmp[59:60])
+      tmp <- c(tmp[1:58], lpday, tmp[61:366])
+    }
 
-        DailyTemp[,yr,cell] <- tmp
+    Daily.Temp[,yr,cell] <- tmp
 I   }
 }
 
 # average across all 9 grid squares
-dtemp <- rowMeans(DailyTemp, dims = 2)
+Daily.Temp <- rowMeans(Daily.Temp, dims = 2)
 
 # cleanup
-rm(cell, DailyTemp, lpday, MeanTemp, tmp, yr)
-
-
-###############################################################################
-# mtemp (mean yearly and season temperatures)
-###############################################################################
-
-mtemp <- matrix(nrow=55,ncol=5)
-
-colnames(mtemp) <- c('Year','Winter','Spring','Summer','Autumn')
-
-# for every year take the mean temperature, overall and for each season
-for (yr in 1:55){
-
-# because winter spans the year the average includes the previous years
-# december (except in 1960 as i dont have the data for 1959)
-
-    mtemp[yr,1] <- mean(dtemp[,yr])
-    if (yr > 1) {
-        mtemp[yr,2] <- mean(mean(dtemp[335:365,yr-1])+mean(dtemp[1:59,yr]))
-    } else{
-        mtemp[yr,2] <- mean(dtemp[1:59,yr])
-    }
-
-    mtemp[yr,3] <- mean(dtemp[60:151,yr])
-    mtemp[yr,4] <- mean(dtemp[152:243,yr])
-    mtemp[yr,5] <- mean(dtemp[244:334,yr])
-}
-
-rm(yr)
+rm(cell, lpday, MeanTemp, tmp, yr)

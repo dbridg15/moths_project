@@ -13,22 +13,22 @@ require('ggplot2')
 
 # start off data frame with mean yearly temperature
 temperatures <- data.frame('year' = c(1960:2014),
-                           'ytemp' = apply(dtemp, 2, mean))
+               'ytemp' = apply(Daily.Temp, 2, mean))
 
 # add the seasons
-for(i in 1:nrow(seasons)){
-    temperatures[as.character(seasons$season[i])] <-
-        colMeans(dtemp[seasons$first[i]:seasons$last[i],])
+for (i in 1:nrow(seasons)){
+  temperatures[as.character(seasons$season[i])] <-
+    colMeans(Daily.Temp[seasons$first.day[i]:seasons$last.day[i],])
 }
 
 # winter is weired! (goes across 2 years)
 #335-59 (335-365 of yr-1 and 1:59 of yr)
 
 # only have the second half of winter for 1960 (no 1959 data)
-temperatures$winter[1] <- mean(dtemp[1:59,1])
+temperatures$winter[1] <- mean(Daily.Temp[1:59,1])
 
-for(yr in 2:55){
-    temperatures$winter[yr] <- mean(c(dtemp[335:356,yr-1], dtemp[1:59, yr]))
+for (yr in 2:55){
+  temperatures$winter[yr] <- mean(c(Daily.Temp[335:356,yr-1], Daily.Temp[1:59, yr]))
 }
 
 #add cons
@@ -44,35 +44,31 @@ rm(i, yr, cons)
 # ****if you get more time do for only 1990-2014****
 # get some numbers
 
-temperature_analysis <- data.frame('time_period' =colnames(temperatures)[2:19])
-temperature_analysis$slope <- NA
-temperature_analysis$p_val <- NA
-temperature_analysis$r_sqr <- NA
+temperature.analysis. <- data.frame('time_period' =colnames(temperatures)[2:19])
+temperature.analysis.$slope <- NA
+temperature.analysis.$p.val <- NA
+temperature.analysis.$r.sqr <- NA
 
-for(i in 2:19){
-    mdl <- lm(as.numeric(unlist(temperatures[i])) ~ temperatures$year)
-    temperature_analysis$slope[i-1] <- as.numeric(coef(mdl)[2])  # slope
-    temperature_analysis$p_val[i-1] <- as.numeric(anova(mdl)$'Pr(>F)'[1]) # p-value
-    temperature_analysis$r_sqr[i-1] <- as.numeric(summary(mdl)[8])  # R squared
+for (i in 2:19){
+  mdl <- lm(as.numeric(unlist(temperatures[i])) ~ temperatures$year)
+  temperature.analysis.$slope[i-1] <- as.numeric(coef(mdl)[2])  # slope
+  temperature.analysis.$p.val[i-1] <- as.numeric(anova(mdl)$'Pr(>F)'[1]) # p-value
+  temperature.analysis.$r.sqr[i-1] <- as.numeric(summary(mdl)[8])  # R squared
 }
 
 # plots
-if(PLOTS == TRUE){
-
 pdf("../Results/temperature_plots.pdf", width = 10, height = 7.5)
 
-for(i in 2:19){
-    print(qplot(temperatures$year, temperatures[i], xlab = "Years",
-            ylab = paste("Mean Temperature", colnames(temperatures)[i])) +
-            theme_classic() +
-            geom_smooth(method = 'lm', col = 'black') +
-            ggtitle(paste("slope:", temperature_analysis$slope[i-1], "\n",
-                          "P Value:", temperature_analysis$p_val[i-1], "\n",
-                          "R Squared:", temperature_analysis$r_sqr[i-1])))
+for (i in 2:19){
+  print(qplot(temperatures$year, temperatures[i], xlab = "Years",
+      ylab = paste("Mean Temperature", colnames(temperatures)[i])) +
+      theme_classic() +
+      geom_smooth(method = 'lm', col = 'black') +
+      ggtitle(paste("slope:", temperature.analysis.$slope[i-1], "\n",
+              "P Value:", temperature.analysis.$p.val[i-1], "\n",
+              "R Squared:", temperature.analysis.$r.sqr[i-1])))
 }
 
 dev.off()
-
-}
 
 rm(i, mdl)

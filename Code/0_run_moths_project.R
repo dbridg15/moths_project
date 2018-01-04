@@ -5,14 +5,11 @@
 # Author: David Bridgwood (dmb2417@ic.ac.uk)
 
 rm(list = ls())
-
+graphics.off()
 
 ###############################################################################
 #
 ###############################################################################
-
-# generate plots?
-PLOTS <- FALSE
 
 source("1_read_in_data.R")
 
@@ -25,3 +22,5 @@ source("4_species_classifications.R")
 source("5_climate_analysis.R")
 
 source("6_effect_on_moths.R")
+
+source("7_the_model.R")
