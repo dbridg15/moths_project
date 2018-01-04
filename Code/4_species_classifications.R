@@ -10,15 +10,26 @@
 ###############################################################################
 
 seas.list <- c("early.spring", "spring", "late.spring", "spring.summer",
-			   "early.summer", "summer", "late.summer", "summer.autumn", 
-			   "early.autumn", "autumn", "late.autumn", "autumn.winter", 
-			   "early.winter", "winter", "late.winter", "winter.spring")
+			   "early.summer", "summer", "late.summer", "summer.autumn",
+			   "early.autumn", "autumn", "late.autumn", "autumn.winter",
+			   "early.winter", "winter", "late.winter", "winter.spring",
+               "none")
 
-first.day <- c(60,107,152,199,244,290,335,1,60,152,244,335,60,152,244,1)
-last.day <- c(106,151,198,243,289,334,365,59,151,243,334,59,243,334,365,151)
+first.day <- c(60,60,107,60,152,152,199,152,244,244,290,244,335,335,1,1,1)
+last.day <- c(106,151,151,243,198,243,243,334,289,334,334,365,365,59,59,151,365)
 
 seasons <- data.frame(seas.list, first.day, last.day)
 colnames(seasons) <- c('season', 'first.day', 'last.day')
+
+# add colour
+seasons$colour <- NA
+colfunc <- colorRampPalette(c("green", "yellow", "blue"))
+
+for (i in 1:(nrow(seasons)-1)){
+    seasons$colour[i]  <- colfunc((nrow(seasons)-1))[i]
+}
+
+seasons$colour[17] <- "grey"
 
 rm(seas.list, first.day, last.day)
 
@@ -29,11 +40,11 @@ rm(seas.list, first.day, last.day)
 
 # list of vectors contain day all individuals were caught for given species
 # i.e. if day 167 had 3 of that species lits would have ... 167, 167, 167, ...
-individual.flights <- rep(list(c()), 110 )
+individual.flights <- rep(list(c()), 111)
 i <- 1  # starting counter
 
 for (id in as.character(ss.df$id)){
-  daily.spc.count <- as.numeric(ss.moths.yrsum[id,])
+  daily.spc.count <- as.numeric(ss.moths.yrsum[id, ])
   daily.spc.count[is.na(daily.spc.count)] <- 0
   tmp <- c()
 
@@ -87,8 +98,15 @@ for (id in 1:110){
     }
   }
 }
+
 class[which(is.na(class[,3])),3] <- "none"
 
 ss.df$season <- class$season
+
+# and add colours
+ss.df$col <- NA
+for (i in 1:nrow(ss.df)){
+    ss.df$col[i] <- seasons$colour[which(seasons$season == ss.df$season[i])]
+}
 
 rm(class, id, j, individual.flights)

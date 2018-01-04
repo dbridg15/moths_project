@@ -20,7 +20,7 @@ for (yr in 1:25){
 
   # read in the .csv files for all years (1990-2014)
   dat <- read.csv(paste('../Data/Moths/Moths', yr+1989, '.csv', sep=''),
-          header=F)
+				  header=F)
   # the days where traps were put out
   julianday <- as.numeric(dat[1,4:(dim(dat)[2])])
   dat[is.na(dat)] <- 0  # replace NAs with 0s
@@ -62,7 +62,7 @@ for (s in 1:393){
 }
 
 # cleanup
-rm(s,yr)
+rm(s, yr)
 
 
 ###############################################################################
@@ -75,7 +75,7 @@ for (cell in 1:9){  # for each of the 9 Grids
 
   # read in data
   MeanTemp <- read.csv(paste('../Data/Climate//MeanTemp_', cell, '.csv',
-              sep=''), header=F)
+                             sep=''), header=F)
 
   for (yr in 1:55){  # from 1960-2014 (1:55)o
     tmp <- subset(MeanTemp, MeanTemp$V3 == (1959 + yr))

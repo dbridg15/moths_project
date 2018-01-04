@@ -9,7 +9,8 @@
 # adjusted for abundance
 ###############################################################################
 
-aa.ss.flight <- array(data = NA, dim = c(nrow(ss.flight),4,25), dimnames = NULL)
+aa.ss.flight <- array(data = NA, dim = c(nrow(ss.flight),4,25),
+                      dimnames = NULL)
 
 colnames(aa.ss.flight) <- c("FFD", "LFD", "FP", "Fpos")
 rownames(aa.ss.flight) <- ss.df$id
@@ -17,7 +18,7 @@ rownames(aa.ss.flight) <- ss.df$id
 for (id in as.character(ss.df$id)){
 
   # list of empty vectors to put in flight days for all years
-  FD.list <- rep( list(c()), 25)
+  FD.list <- rep(list(c()), 25)
 
   for (yr in 1:25){
     temp <- as.numeric(ss.moths[id,,yr])  # how many flew on each day
@@ -38,7 +39,7 @@ for (id in as.character(ss.df$id)){
   # row - 200 = number of samples
   # columns - as many as the lowest count year (above the threshold X)
   minsize <- sort(as.numeric(ss.msummary[id,])
-          )[which(sort(as.numeric(ss.msummary[id, ])) >X)[1]]
+                  )[which(sort(as.numeric(ss.msummary[id, ])) >X)[1]]
   # z - 25 = years
   FD.Rarf <- array(data = NA, dim = c(200, minsize, 25), dimnames = NULL)
 
@@ -48,10 +49,10 @@ for (id in as.character(ss.df$id)){
       for (i in 1:200){  # do 200 times
         # sample the year to the size of the least abundant
         FD.Rarf[i,,yr] <- sort(sample(FD.list[[yr]], size = minsize,
-                       replace = FALSE))
+                                      replace = FALSE))
       }
     } else {
-      FD.Rarf[,,yr] <- NA
+      FD.Rarf[ , ,yr] <- NA
     }
   }
 

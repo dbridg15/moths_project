@@ -28,7 +28,8 @@ for (i in 1:nrow(seasons)){
 temperatures$winter[1] <- mean(Daily.Temp[1:59,1])
 
 for (yr in 2:55){
-  temperatures$winter[yr] <- mean(c(Daily.Temp[335:356,yr-1], Daily.Temp[1:59, yr]))
+  temperatures$winter[yr] <- mean(c(Daily.Temp[335:356,yr-1],
+                                    Daily.Temp[1:59, yr]))
 }
 
 #add cons
@@ -52,7 +53,7 @@ temperature.analysis.$r.sqr <- NA
 for (i in 2:19){
   mdl <- lm(as.numeric(unlist(temperatures[i])) ~ temperatures$year)
   temperature.analysis.$slope[i-1] <- as.numeric(coef(mdl)[2])  # slope
-  temperature.analysis.$p.val[i-1] <- as.numeric(anova(mdl)$'Pr(>F)'[1]) # p-value
+  temperature.analysis.$p.val[i-1] <- as.numeric(anova(mdl)$'Pr(>F)'[1]) # p
   temperature.analysis.$r.sqr[i-1] <- as.numeric(summary(mdl)[8])  # R squared
 }
 

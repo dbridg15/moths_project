@@ -42,14 +42,12 @@ for (id in as.character(ss.df$id)){
   # for each explanatory and measure
   for (a in expl){
     for (b in msr){
+      p <- paste0(a, ".", b)  # prefix
       # do regression and store coefs in ss.df
       mdl <- lm(aa.ss.flight[id, b, ] ~ unlist(expl.df[a]))
-      ss.df[id, paste0(a, "_", b, "_slope")] <-
-                as.numeric(coef(mdl)[2])  # slope
-      ss.df[id, paste0(a, "_", b, "_p_val")] <-
-                as.numeric(anova(mdl)$'Pr(>F)'[1]) # p-value
-      ss.df[id, paste0(a, "_", b, "_r_sqr")] <-
-                as.numeric(summary(mdl)[8])  # R squared
+      ss.df[id, paste0(p, ".slope")] <- as.numeric(coef(mdl)[2])
+      ss.df[id, paste0(p, ".p.val")] <- as.numeric(anova(mdl)$'Pr(>F)'[1])
+      ss.df[id, paste0(p, ".r.sqr")] <- as.numeric(summary(mdl)[8])
     }
   }
   # reset stemp to NA
@@ -65,10 +63,10 @@ rm(expl.df, id, a, b, mdl, val)
 
 tocalc <- c()
 for (x in expl){ for (y in msr){
-  tocalc <- c(tocalc, paste0(x, "_", y)) }}
+  tocalc <- c(tocalc, paste0(x, ".", y)) }}
 
-hdrs <- c("no_nve", "no_pve", "chi_sqr", "p_val", "no_sig_nve",
-      "no_sig_pve","sig_chi_sqr", "sig_p_val")
+hdrs <- c("no.nve", "no.pve", "chi.sqr", "p.val", "no.sig.nve",
+      "no.sig.pve","sig.chi.sqr", "sig.p.val")
 
 chi.rslts <- data.frame('measure' = tocalc)
 
@@ -82,18 +80,17 @@ rm(hdrs, tocalc)
 for (i in 1:nrow(chi.rslts)){
   # for all slopes
   chi.rslts$no_nve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i],
-                               "_slope")] < 0))
+                               ".slope")] < 0))
   chi.rslts$no_pve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i],
-                               "_slope")] > 0))
+                               ".slope")] > 0))
   tmp <- chisq.test(c(chi.rslts$no_nve[i], chi.rslts$no_pve[i]))
   chi.rslts$chi_sqr[i] <- as.numeric(tmp[1])
   chi.rslts$p_val[i] <- as.numeric(tmp[3])
 
   # for only significant slopes
-  chi.rslts$no_sig_nve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i],"_slope")]
-              [which(ss.df[,paste0(chi.rslts$measure[i],"_p_val")] < 0.05)] < 0))
-  chi.rslts$no_sig_pve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i],"_slope")]
-              [which(ss.df[,paste0(chi.rslts$measure[i],"_p_val")] < 0.05)] > 0))
+  sig.list <- which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)
+  chi.rslts$no_sig_nve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i], ".slope")][which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)] < 0))
+  chi.rslts$no_sig_pve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i], ".slope")][which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)] > 0))
   tmp <- chisq.test(c(chi.rslts$no_sig_nve[i], chi.rslts$no_sig_pve[i]))
   chi.rslts$sig_chi_sqr[i] <- as.numeric(tmp[1])
   chi.rslts$sig_p_val[i] <- as.numeric(tmp[3])

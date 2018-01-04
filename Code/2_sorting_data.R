@@ -31,9 +31,9 @@ for (yr in 1:25){  # for 25 years of moth data
     if (length(FlightDays) > X){  # if there are enough to calculate from
       flight[id,1,yr] <- mean(FlightDays[1:X])
       flight[id,2,yr] <- (mean(FlightDays[(length(FlightDays)-(X-1)):
-                   (length(FlightDays))]))
+                               (length(FlightDays))]))
       flight[id,3,yr] <- (as.numeric(flight[id,2,yr]) -
-                as.numeric(flight[id,1,yr]))
+                          as.numeric(flight[id,1,yr]))
       flight[id,4,yr] <- mean(flight[id,1:2,yr])
     }
   }
@@ -71,17 +71,16 @@ selspc <- which(selspc > 0)
 ss.df <- subset(all.spc.df, all.spc.df$id %in% selspc)
 
 # ss.flight FFD, LFD, FP for selected speecies for all years
-ss.flight <- array(data = NA, dim = c(length(selspc),4,25),
-         dimnames = NULL)
+ss.flight <- array(data = NA, dim = c(length(selspc),4,25), dimnames = NULL)
 
 colnames(ss.flight) <- c('FFD','LFD','FP','Fpos')
 rownames(ss.flight) <- ss.df$id
 
 # ss.flight is a subset of flight for the species in selspc
-ss.flight <- flight[as.character(ss.df$id),,]
+ss.flight <- flight[as.character(ss.df$id), , ]
 
 # ss.moths same as moths but for selected species only
-ss.moths <- moths[as.character(ss.df$id),,]
+ss.moths <- moths[as.character(ss.df$id), , ]
 
 # ss.moths.yrsum sum for each day over the 25 years
 ss.moths.yrsum <- apply(ss.moths, c(1,2), sum, na.rm = TRUE)
