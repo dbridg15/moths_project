@@ -35,7 +35,7 @@ for (yr in 1:25){
   tmp$Fpos   <- aa.ss.flight[,4,yr]
 
   for (id in 1:110){
-    tmp$stemp[id] <- temperatures[yr+30, tmp$season[id]]
+    tmp$stemp[id] <- temperatures[yr+30, as.character(tmp$season[id])]
   }
   mdl.df <- rbind(mdl.df, tmp)
 }
@@ -58,41 +58,44 @@ expl <- c("ytemp", "stemp", "winter")
 for (i in expl){
 
 # FFD model
-ffd.model <- lmer(FFD ~ (1|year) + (mdl.df[,i]|id), data = mdl.df)
-summary(ffd.model)
-
+ffd.model   <- lmer(FFD ~ (1|year) + (mdl.df[,i]|id), data = mdl.df)
 ffd.fixeff  <- fixef(ffd.model)
 ffd.randeff <- ranef(ffd.model)
+ffd.slope     <- vector(length=110)
+ffd.intercept <- vector(length=110)
 
 temps <- 7:13
-ffd.resp <- vector(length=110)
-
-plot(c(7,13),c(0, 365),type = 'n', main = paste("FFD: ", i))
 for (s in 1:110){
-  lines(temps, ffd.fixeff[1] + ffd.randeff$id[s,1] +
-        ffd.randeff$id[s,2]*temps, type='l')
-  ffd.resp[s] <- coef(lm(ffd.fixeff[1] + ffd.randeff$id[s,1] +
-                         ffd.randeff$id[s,2]*temps~temps))[2]
+  ln <-  coef(lm(ffd.fixeff[1] + ffd.randeff$id[s,1] +
+                 ffd.randeff$id[s,2]*temps~temps))
+
+  ffd.slope[s]     <- as.numeric(ln[2])
+  ffd.intercept[s] <- as.numeric(ln[1])
+  rm(ln)
 }
 
 # LFD model
-lfd.model <- lmer(LFD ~ (1|year) + (mdl.df[, i]|id), data = mdl.df)
-# summary(lfdmodel)
-
-lfd.fixeff  <- fixef(lfd.model)
-lfd.randeff <- ranef(lfd.model)
+lfd.model     <- lmer(LFD ~ (1|year) + (mdl.df[, i]|id), data = mdl.df)
+lfd.fixeff    <- fixef(lfd.model)
+lfd.randeff   <- ranef(lfd.model)
+lfd.slope      <- vector(length=110)
+lfd.intercept <- vector(length=110)
 
 temps <- 7:13
-lfd.resp <- vector(length=110)
-
-plot(c(7,13),c(0, 365),type='n', main = paste("LFD: ", i))
 for (s in 1:110){
-  lines(temps, lfd.fixeff[1] + lfd.randeff$id[s,1] +
-        lfd.randeff$id[s,2]*temps, type='l')
-  lfd.resp[s] <- coef(lm(lfd.fixeff[1] + lfd.randeff$id[s,1] +
-                         lfd.randeff$id[s,2]*temps~temps))[2]
+  ln <- coef(lm(lfd.fixeff[1] + lfd.randeff$id[s,1] +
+                lfd.randeff$id[s,2]*temps~temps))
+
+  lfd.slope[s]     <- as.numeric(ln[2])
+  lfd.intercept[s] <- as.numeric(ln[1])
+  rm(ln)
 }
-plot(ffd.resp, lfd.resp, main = i)
+
+prty.plt.df <- cbind(ss.df[ , c(1,4)], ffd.slope, ffd.intercept,
+                                       lfd.slope, lfd.intercept)
+prty.plt.df$season <- factor(prty.plt.df$season, levels = rev(seas.list))
+source("7.1_plot.R")
+
 }
 
 dev.off()

@@ -13,12 +13,10 @@ require(gridExtra)
 #
 ###############################################################################
 
-prty.plt.df <- cbind(ss.df[ , c(1,4)], ffd.resp, lfd.resp)
-prty.plt.df$season <- factor(prty.plt.df$season, levels = rev(seas.list))
 
 
 # ffd histogram
-ffd.hist <- ggplot(prty.plt.df, aes(ffd.resp, fill = season))
+ffd.hist <- ggplot(prty.plt.df, aes(ffd.slope, fill = season))
 ffd.hist <- ffd.hist + geom_histogram(binwidth = 0.1)
 ffd.hist <- ffd.hist + scale_fill_brewer(palette = 'RdYlGn')
 ffd.hist <- ffd.hist + guides(fill = FALSE)
@@ -34,7 +32,7 @@ ffd.hist <- ffd.hist + theme(axis.line.x      = element_blank(),
 
 
 # ldf histogram
-lfd.hist <- ggplot(prty.plt.df, aes(lfd.resp, fill = season))
+lfd.hist <- ggplot(prty.plt.df, aes(lfd.slope, fill = season))
 lfd.hist <- lfd.hist + geom_histogram(binwidth = 0.1)
 lfd.hist <- lfd.hist + scale_fill_brewer(palette = 'RdYlGn')
 lfd.hist <- lfd.hist + guides(fill = FALSE)
@@ -50,7 +48,7 @@ lfd.hist <- lfd.hist + theme(axis.line.y      = element_blank(),
                              panel.border     = element_blank())
 
 # scatter plot
-a <- ggplot(prty.plt.df, aes(ffd.resp, lfd.resp, color = season))
+a <- ggplot(prty.plt.df, aes(ffd.slope, lfd.slope, color = season))
 a <- a + geom_hline(yintercept = 0, lwd = 0.2)
 a <- a + geom_vline(xintercept = 0, lwd = 0.2)
 a <- a + geom_point(size = 2)
@@ -76,6 +74,3 @@ empty <- ggplot() + geom_point(aes(1,1), colour="white") +
 # now put them in a grid
 grid.arrange(ffd.hist, empty, a, lfd.hist, ncol=2, nrow=2,
              widths = c(4, 1), heights = c(1, 4))
-
-
-

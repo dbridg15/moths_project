@@ -32,7 +32,7 @@ expl.df$stemp <- NA  # will be specific for each species
 
 # for the id of each selected species
 for (id in as.character(ss.df$id)){
-  expl.df$stemp <- unlist(temperatures[ss.df[id, "season"]])[31:55]
+  expl.df$stemp <- as.numeric(unlist(temperatures[as.character(ss.df[id, "season"])])[31:55])
 
   # for each explanatory and measure
   for (a in expl){
@@ -73,21 +73,21 @@ rm(hdrs, tocalc)
 
 for (i in 1:nrow(chi.rslts)){
   # for all slopes
-  chi.rslts$no_nve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i],
+  chi.rslts$no.nve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i],
                                ".slope")] < 0))
-  chi.rslts$no_pve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i],
+  chi.rslts$no.pve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i],
                                ".slope")] > 0))
-  tmp <- chisq.test(c(chi.rslts$no_nve[i], chi.rslts$no_pve[i]))
-  chi.rslts$chi_sqr[i] <- as.numeric(tmp[1])
-  chi.rslts$p_val[i] <- as.numeric(tmp[3])
+  tmp <- chisq.test(c(chi.rslts$no.nve[i], chi.rslts$no.pve[i]))
+  chi.rslts$chi.sqr[i] <- as.numeric(tmp[1])
+  chi.rslts$p.val[i] <- as.numeric(tmp[3])
 
   # for only significant slopes
   sig.list <- which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)
-  chi.rslts$no_sig_nve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i],".slope")][which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)] < 0))
-  chi.rslts$no_sig_pve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i], ".slope")][which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)] > 0))
-  tmp <- chisq.test(c(chi.rslts$no_sig_nve[i], chi.rslts$no_sig_pve[i]))
-  chi.rslts$sig_chi_sqr[i] <- as.numeric(tmp[1])
-  chi.rslts$sig_p_val[i] <- as.numeric(tmp[3])
+  chi.rslts$no.sig.nve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i],".slope")][which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)] < 0))
+  chi.rslts$no.sig.pve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i], ".slope")][which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)] > 0))
+  tmp <- chisq.test(c(chi.rslts$no.sig.nve[i], chi.rslts$no.sig.pve[i]))
+  chi.rslts$sig.chi.sqr[i] <- as.numeric(tmp[1])
+  chi.rslts$sig.p.val[i] <- as.numeric(tmp[3])
 }
 
 rm(i, x, y, msr, expl)

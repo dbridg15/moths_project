@@ -20,17 +20,6 @@ last.day <- c(106,151,151,243,198,243,243,334,289,334,334,365,365,59,59,151,365)
 
 seasons <- data.frame(seas.list, first.day, last.day)
 colnames(seasons) <- c('season', 'first.day', 'last.day')
-
-# add colour
-seasons$colour <- NA
-colfunc <- colorRampPalette(c("green", "yellow", "blue"))
-
-for (i in 1:(nrow(seasons)-1)){
-    seasons$colour[i]  <- colfunc((nrow(seasons)-1))[i]
-}
-
-seasons$colour[17] <- "grey"
-
 seasons$season <- factor(seasons$season, levels = seas.list)
 
 rm(first.day, last.day)
@@ -106,10 +95,6 @@ class[which(is.na(class[,3])),3] <- "none"
 ss.df$season <- class$season
 
 # and add colours
-ss.df$col <- NA
-for (i in 1:nrow(ss.df)){
-    ss.df$col[i] <- seasons$colour[which(seasons$season == ss.df$season[i])]
-}
 
 ss.df$season <- factor(ss.df$season, levels = seas.list)
 
