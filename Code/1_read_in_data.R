@@ -43,6 +43,7 @@ for (yr in 1:25){  # for 1990-2014
 
 rownames(moths) <- all.spc.df$id
 
+
 # cleanup
 rm(dat, day, zero.days, d, julianday, yr)
 

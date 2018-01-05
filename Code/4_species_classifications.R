@@ -40,7 +40,7 @@ rm(seas.list, first.day, last.day)
 
 # list of vectors contain day all individuals were caught for given species
 # i.e. if day 167 had 3 of that species lits would have ... 167, 167, 167, ...
-individual.flights <- rep(list(c()), 111)
+individual.flights <- rep(list(c()), 110)
 i <- 1  # starting counter
 
 for (id in as.character(ss.df$id)){
@@ -73,7 +73,7 @@ class <- as.data.frame(class)
 
 for (id in 1:110){
 
-  for (j in 1:8){
+  for (j in c(1, 3, 5, 7, 9, 11, 13, 15)){  # top of hierarchy: early/late
     if ( (class[id,1] >= seasons[j,2]) & (class[id,1] <= seasons[j,3]) &
        (class[id,2] <= seasons[j,3])){
         class[id,3] <- as.character(seasons$season[j])
@@ -81,7 +81,7 @@ for (id in 1:110){
   }
 
   if (is.na(class[id,3])){
-    for (j in 9:12){
+    for (j in c(2, 6, 10, 14)){  # second hierarchy: whole season
       if ( (class[id,1] >= seasons[j,2]) & (class[id,1] <= seasons[j,3]) &
          (class[id,2] <= seasons[j,3])){
           class[id,3] <- as.character(seasons$season[j])
@@ -90,7 +90,7 @@ for (id in 1:110){
   }
 
   if (is.na(class[id,3])){
-    for (j in 13:16){
+    for (j in c(4, 8, 12, 16)){  # third hierarchy: two seasons
       if ( (class[id,1] >= seasons[j,2]) & (class[id,1] <= seasons[j,3]) &
          (class[id,2] <= seasons[j,3])){
           class[id,3] <- as.character(seasons$season[j])
@@ -109,4 +109,4 @@ for (i in 1:nrow(ss.df)){
     ss.df$col[i] <- seasons$colour[which(seasons$season == ss.df$season[i])]
 }
 
-rm(class, id, j, individual.flights)
+rm(class, id, j)

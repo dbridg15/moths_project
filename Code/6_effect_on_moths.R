@@ -12,8 +12,8 @@
 # these are the thing i'll calcuate - setting them up as a list, they will be
 # heading in the ss.df
 expl <- c("year", "ytemp", "stemp", "winter", "cons")
-msr <- c("FFD", "LFD", "FP", "Fpos")
-val <- c("slope", "p.val", "r.sqr")
+msr  <- c("FFD", "LFD", "FP", "Fpos")
+val  <- c("slope", "p.val", "r.sqr")
 
 tocalc <- c()
 for (x in expl){ for (y in msr){ for (z in val){
@@ -32,12 +32,7 @@ expl.df$stemp <- NA  # will be specific for each species
 
 # for the id of each selected species
 for (id in as.character(ss.df$id)){
-  # set stemp for the given species use ytemp if season is "none"
-  if (ss.df[id, "season"] == "none"){
-    expl.df$stemp <- expl.df$ytemp
-  } else{
-    expl.df$stemp <- unlist(temperatures[ss.df[id, "season"]])[31:55]
-  }
+  expl.df$stemp <- unlist(temperatures[ss.df[id, "season"]])[31:55]
 
   # for each explanatory and measure
   for (a in expl){
@@ -54,8 +49,8 @@ for (id in as.character(ss.df$id)){
   expl.df$stemp <- NA  # will be specific for each species
 }
 
-
 rm(expl.df, id, a, b, mdl, val)
+
 
 ###############################################################################
 # are slopes in one direction more common than others (chi-squared)
@@ -66,7 +61,7 @@ for (x in expl){ for (y in msr){
   tocalc <- c(tocalc, paste0(x, ".", y)) }}
 
 hdrs <- c("no.nve", "no.pve", "chi.sqr", "p.val", "no.sig.nve",
-      "no.sig.pve","sig.chi.sqr", "sig.p.val")
+          "no.sig.pve","sig.chi.sqr", "sig.p.val")
 
 chi.rslts <- data.frame('measure' = tocalc)
 
@@ -75,7 +70,6 @@ for (i in hdrs){
 }
 
 rm(hdrs, tocalc)
-
 
 for (i in 1:nrow(chi.rslts)){
   # for all slopes
@@ -89,7 +83,7 @@ for (i in 1:nrow(chi.rslts)){
 
   # for only significant slopes
   sig.list <- which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)
-  chi.rslts$no_sig_nve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i], ".slope")][which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)] < 0))
+  chi.rslts$no_sig_nve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i],".slope")][which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)] < 0))
   chi.rslts$no_sig_pve[i] <- length(which(ss.df[,paste0(chi.rslts$measure[i], ".slope")][which(ss.df[,paste0(chi.rslts$measure[i],".p.val")] < 0.05)] > 0))
   tmp <- chisq.test(c(chi.rslts$no_sig_nve[i], chi.rslts$no_sig_pve[i]))
   chi.rslts$sig_chi_sqr[i] <- as.numeric(tmp[1])

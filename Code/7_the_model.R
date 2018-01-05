@@ -12,15 +12,16 @@ require(lme4)
 ###############################################################################
 
 # intialise empty dataframe with needed columns
-mdl.df <- data.frame("id" = NA, "season" = NA, "year" = NA, "ytemp" = NA,
-           "stemp" = NA, "winter" = NA, "FFD" = NA, "LFD" = NA,
-           "FP" = NA, "Fpos" = NA)
+mdl.df <- data.frame("id"    = NA, "season" = NA, "year" = NA, "ytemp" = NA,
+                     "stemp" = NA, "winter" = NA, "FFD"  = NA, "LFD"   = NA,
+                     "FP"    = NA, "Fpos"   = NA)
 
 # temporary df with same column headings
-tmp <- data.frame("id" = rep(NA, 110), "year" = rep(NA, 110),
-          "ytemp" = rep(NA, 110), "stemp" = rep(NA, 110),
-          "winter" = NA, "FFD" = NA, "LFD" = NA, "FP" = NA,
-          "Fpos" = NA)
+tmp <- data.frame("id"    = rep(NA, 110), "season" = rep(NA, 110),
+                  "year"  = rep(NA, 110), "ytemp"  = rep(NA, 110),
+                  "stemp" = rep(NA, 110), "winter" = rep(NA, 110),
+                  "FFD"   = rep(NA, 110), "LFD"    = rep(NA, 110),
+                  "FP"    = rep(NA, 110), "Fpos"   = rep(NA, 110))
 
 for (yr in 1:25){
   tmp$id     <- ss.df$id
@@ -34,18 +35,13 @@ for (yr in 1:25){
   tmp$Fpos   <- aa.ss.flight[,4,yr]
 
   for (id in 1:110){
-    if (tmp$season[id] == "none"){
-      tmp$stemp[id] <- tmp$ytemp[id]
-    } else {
-      tmp$stemp[id] <- temperatures[yr+30, tmp$season[id]]
-    }
+    tmp$stemp[id] <- temperatures[yr+30, tmp$season[id]]
   }
-
   mdl.df <- rbind(mdl.df, tmp)
 }
 
-rm(tmp, yr)
 mdl.df <- mdl.df[-1,]
+rm(tmp, yr)
 
 
 ###############################################################################
@@ -60,28 +56,27 @@ for (i in expl){
 
 # FFD model
 ffd.model <- lmer(FFD ~ (1|year) + (mdl.df[,i]|id), data = mdl.df)
-# summary(ffdmodel)
+summary(ffd.model)
 
-ffd.fixeff <- fixef(ffd.model)
+ffd.fixeff  <- fixef(ffd.model)
 ffd.randeff <- ranef(ffd.model)
 
 temps <- 7:13
 ffd.resp <- vector(length=110)
 
-plot(c(7,13),c(0, 365),type='n', main = paste("FFD: ", i))
+plot(c(7,13),c(0, 365),type = 'n', main = paste("FFD: ", i))
 for (s in 1:110){
   lines(temps, ffd.fixeff[1] + ffd.randeff$id[s,1] +
-    ffd.randeff$id[s,2]*temps, type='l')
+        ffd.randeff$id[s,2]*temps, type='l')
   ffd.resp[s] <- coef(lm(ffd.fixeff[1] + ffd.randeff$id[s,1] +
-            ffd.randeff$id[s,2]*temps~temps))[2]
+                         ffd.randeff$id[s,2]*temps~temps))[2]
 }
-
 
 # LFD model
 lfd.model <- lmer(LFD ~ (1|year) + (mdl.df[, i]|id), data = mdl.df)
 # summary(lfdmodel)
 
-lfd.fixeff <- fixef(lfd.model)
+lfd.fixeff  <- fixef(lfd.model)
 lfd.randeff <- ranef(lfd.model)
 
 temps <- 7:13
@@ -90,11 +85,10 @@ lfd.resp <- vector(length=110)
 plot(c(7,13),c(0, 365),type='n', main = paste("LFD: ", i))
 for (s in 1:110){
   lines(temps, lfd.fixeff[1] + lfd.randeff$id[s,1] +
-    lfd.randeff$id[s,2]*temps, type='l')
+        lfd.randeff$id[s,2]*temps, type='l')
   lfd.resp[s] <- coef(lm(lfd.fixeff[1] + lfd.randeff$id[s,1] +
-            lfd.randeff$id[s,2]*temps~temps))[2]
+                         lfd.randeff$id[s,2]*temps~temps))[2]
 }
-
 plot(ffd.resp, lfd.resp, main = i)
 }
 
