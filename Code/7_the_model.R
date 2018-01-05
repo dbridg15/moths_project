@@ -41,7 +41,10 @@ for (yr in 1:25){
 }
 
 mdl.df <- mdl.df[-1,]
+
 rm(tmp, yr)
+
+mdl.df$season <- factor(mdl.df$season, levels = seas.list)
 
 
 ###############################################################################

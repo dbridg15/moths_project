@@ -31,7 +31,9 @@ for (i in 1:(nrow(seasons)-1)){
 
 seasons$colour[17] <- "grey"
 
-rm(seas.list, first.day, last.day)
+seasons$season <- factor(seasons$season, levels = seas.list)
+
+rm(first.day, last.day)
 
 
 ###############################################################################
@@ -108,5 +110,7 @@ ss.df$col <- NA
 for (i in 1:nrow(ss.df)){
     ss.df$col[i] <- seasons$colour[which(seasons$season == ss.df$season[i])]
 }
+
+ss.df$season <- factor(ss.df$season, levels = seas.list)
 
 rm(class, id, j)
