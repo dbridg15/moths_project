@@ -11,29 +11,31 @@
 
 # intialise empty dataframe with needed columns
 mdl.df <- data.frame("id"    = NA, "season" = NA, "year" = NA, "ytemp" = NA,
-                     "stemp" = NA, "winter" = NA, "FFD"  = NA, "LFD"   = NA,
-                     "FP"    = NA, "Fpos"   = NA)
+                     "stemp" = NA, "winter" = NA, "cons" = NA,  "FFD"  = NA,
+                     "LFD"   = NA, "FP"     = NA, "Fpos" = NA)
 
 # temporary df with same column headings
-tmp <- data.frame("id"    = rep(NA, ss.num), "season" = rep(NA, nrow(ss.df)),
-                  "year"  = rep(NA, ss.num), "ytemp"  = rep(NA, nrow(ss.df)),
-                  "stemp" = rep(NA, ss.num), "winter" = rep(NA, nrow(ss.df)),
-                  "FFD"   = rep(NA, ss.num), "LFD"    = rep(NA, nrow(ss.df)),
-                  "FP"    = rep(NA, ss.num), "Fpos"   = rep(NA, nrow(ss.df)))
+tmp <- data.frame("id"    = rep(NA, ss.num), "season" = rep(NA, ss.num),
+                  "year"  = rep(NA, ss.num), "ytemp"  = rep(NA, ss.num),
+                  "stemp" = rep(NA, ss.num), "winter" = rep(NA, ss.num),
+                  "cons"  = rep(NA, ss.num), "FFD"    = rep(NA, ss.num),
+                  "LFD"   = rep(NA, ss.num), "FP"     = rep(NA, ss.num),
+                  "Fpos"  = rep(NA, ss.num))
 
 for (yr in 1:25){
   tmp$id     <- ss.df$id
   tmp$season <- ss.df$season
-  tmp$year   <- temperatures$year[yr+30]
-  tmp$ytemp  <- temperatures$ytemp[yr+30]
-  tmp$winter <- temperatures$winter[yr+30]
-  tmp$FFD    <- aa.ss.flight[,1,yr]
-  tmp$LFD    <- aa.ss.flight[,2,yr]
-  tmp$FP     <- aa.ss.flight[,3,yr]
-  tmp$Fpos   <- aa.ss.flight[,4,yr]
+  tmp$year   <- temperatures$year[yr + 30]
+  tmp$ytemp  <- temperatures$ytemp[yr + 30]
+  tmp$winter <- temperatures$winter[yr + 30]
+  tmp$cons   <- temperatures$cons[yr + 30]
+  tmp$FFD    <- aa.ss.flight[ , 1, yr]
+  tmp$LFD    <- aa.ss.flight[ , 2, yr]
+  tmp$FP     <- aa.ss.flight[ , 3, yr]
+  tmp$Fpos   <- aa.ss.flight[ , 4, yr]
 
   for (id in 1:ss.num){
-    tmp$stemp[id] <- temperatures[yr+30, as.character(tmp$season[id])]
+    tmp$stemp[id] <- temperatures[yr + 30, as.character(tmp$season[id])]
   }
   mdl.df <- rbind(mdl.df, tmp)
 }
@@ -51,14 +53,14 @@ mdl.df$season <- factor(mdl.df$season, levels = seas.list)
 
 pdf(paste0("../Results/model_plots_", X, "_", N, ".pdf"))
 
-expl <- c("ytemp", "stemp", "winter")
+expl <- c("ytemp", "stemp", "winter", "cons")
 
 for (i in expl){
 
 # FFD model
-ffd.model   <- lmer(FFD ~ (1|year) + (mdl.df[,i]|id), data = mdl.df)
-ffd.fixeff  <- fixef(ffd.model)
-ffd.randeff <- ranef(ffd.model)
+ffd.model     <- lmer(FFD ~ (1|year) + (mdl.df[,i]|id), data = mdl.df)
+ffd.fixeff    <- fixef(ffd.model)
+ffd.randeff   <- ranef(ffd.model)
 ffd.slope     <- vector(length=ss.num)
 ffd.intercept <- vector(length=ss.num)
 
@@ -76,7 +78,7 @@ for (s in 1:ss.num){
 lfd.model     <- lmer(LFD ~ (1|year) + (mdl.df[, i]|id), data = mdl.df)
 lfd.fixeff    <- fixef(lfd.model)
 lfd.randeff   <- ranef(lfd.model)
-lfd.slope      <- vector(length=ss.num)
+lfd.slope     <- vector(length=ss.num)
 lfd.intercept <- vector(length=ss.num)
 
 temps <- 7:13

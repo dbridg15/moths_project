@@ -22,7 +22,7 @@ message("Reading in data...")
 source("1_read_in_data.R")
 
 for (X in c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
-  for (N in c(1, 5, 10, 15, 20, 15)){  # min years
+  for (N in c(1, 5, 10, 15, 20, 25)){  # min years
     message(paste0("starting analysis with X = ", X, " and N = ", N))
 
     message("Sorting data...")
