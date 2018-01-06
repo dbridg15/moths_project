@@ -59,17 +59,18 @@ for (i in 2:19){
 pdf("../Results/temperature_plots.pdf", width = 10, height = 7.5)
 
 for (i in 2:19){
-  print(ggplot(temperatures, aes(year, temperatures[i])) +
-        labs(x = "Years",
-             y = paste("Mean Temperature", colnames(temperatures)[i])) +
-        theme_classic() +
-        geom_point() +
-        geom_smooth(method = 'lm', col = 'black') +
-        ggtitle(paste("slope:", temperature.analysis$slope[i-1], "\n",
-                      "P Value:", temperature.analysis$p.val[i-1], "\n",
-                      "R Squared:", temperature.analysis$r.sqr[i-1])))
+ a <- ggplot(temperatures, aes(year, temperatures[i])) +
+      labs(x = "Years",
+           y = paste("Mean Temperature", colnames(temperatures)[i])) +
+      theme_classic() +
+      geom_point() +
+      geom_smooth(method = 'lm', col = 'black') +
+      ggtitle(paste("slope:", temperature.analysis$slope[i-1], "\n",
+                    "P Value:", temperature.analysis$p.val[i-1], "\n",
+                    "R Squared:", temperature.analysis$r.sqr[i-1]))
+  suppressWarnings(print(a))
 }
 
 dev.off()
 
-rm(i, mdl)
+rm(i, mdl, a)

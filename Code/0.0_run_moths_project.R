@@ -18,6 +18,10 @@ require(lme4)
 #
 ###############################################################################
 
+message("\nReading in functions")
+source("0.1_functions.R")
+message("-Done\n")
+
 message("\nReading in data...")
 source("1_read_sort_data.R")
 message("-Done\n")
@@ -41,9 +45,26 @@ for (X in 3){  # c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
     message("-Done\n")
 
     message("\nsetting up model and producing various plots...")
-    source("5.0_the_model.R")
+    source("5_the_model.R")
     message("-Done\n")
 
+    message("\nsaving the data!")
+    filename <- paste0("../Results/", X, "_", N, ".rda")
+    save(aa.ss.flight, chi.rslts, cons.models, mdl.df, ss.df, stemp.models,
+         winter.models, ytemp.models, file = filename)
+    rm(list= ls()[!(ls() %in% c('all.spc.df',
+                                'cons',
+                                'daily.temp',
+                                'individual.flights',
+                                'moths',
+                                'moths.yrsum',
+                                'msummary',
+                                'PrettyPlots',
+                                'seas.list',
+                                'seasons',
+                                'temperature.analysis',
+                                'temperatures'))])
+    message("-Done\n")
   }
 }
 

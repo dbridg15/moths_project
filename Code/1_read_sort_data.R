@@ -64,8 +64,7 @@ for (s in 1:393){
 
 # cleanup
 rm(s, yr)
-  
-  
+
 # moths.yrsum sum for each day over the 25 years
 moths.yrsum <- apply(moths, c(1,2), sum, na.rm = TRUE)
 
@@ -135,7 +134,8 @@ seas.list <- c("early.spring", "spring", "late.spring", "spring.summer",
                "none")
 
 first.day <- c(60,60,107,60,152,152,199,152,244,244,290,244,335,335,1,1,1)
-last.day <- c(106,151,151,243,198,243,243,334,289,334,334,365,365,59,59,151,365)
+last.day  <- c(106,151,151,243,198,243,243,334,289,334,334,365,365,59,59,151,
+               365)
 
 seasons <- data.frame(seas.list, first.day, last.day)
 colnames(seasons) <- c('season', 'first.day', 'last.day')
@@ -184,26 +184,32 @@ spc.class <- as.data.frame(spc.class)
 for (id in 1:393){
 
   for (j in c(1, 3, 5, 7, 9, 11, 13, 15)){  # top of hierarchy: early/late
-    if ( (spc.class[id,1] >= seasons[j,2]) & (spc.class[id,1] <= seasons[j,3]) &
-       (spc.class[id,2] <= seasons[j,3])){
-        spc.class[id,3] <- as.character(seasons$season[j])
+    if ((spc.class[id,1] >= seasons[j,2]) &
+        (spc.class[id,1] <= seasons[j,3]) &
+        (spc.class[id,2] <= seasons[j,3])){
+
+          spc.class[id,3] <- as.character(seasons$season[j])
     }
   }
 
   if (is.na(spc.class[id,3])){
     for (j in c(2, 6, 10, 14)){  # second hierarchy: whole season
-      if ( (spc.class[id,1] >= seasons[j,2]) & (spc.class[id,1] <= seasons[j,3]) &
-         (spc.class[id,2] <= seasons[j,3])){
-          spc.class[id,3] <- as.character(seasons$season[j])
+      if ((spc.class[id,1] >= seasons[j,2]) &
+          (spc.class[id,1] <= seasons[j,3]) &
+          (spc.class[id,2] <= seasons[j,3])){
+
+            spc.class[id,3] <- as.character(seasons$season[j])
       }
     }
   }
 
   if (is.na(spc.class[id,3])){
     for (j in c(4, 8, 12, 16)){  # third hierarchy: two seasons
-      if ( (spc.class[id,1] >= seasons[j,2]) & (spc.class[id,1] <= seasons[j,3]) &
-         (spc.class[id,2] <= seasons[j,3])){
-          spc.class[id,3] <- as.character(seasons$season[j])
+      if ((spc.class[id,1] >= seasons[j,2]) &
+          (spc.class[id,1] <= seasons[j,3]) &
+          (spc.class[id,2] <= seasons[j,3])){
+
+            spc.class[id,3] <- as.character(seasons$season[j])
       }
     }
   }
@@ -214,4 +220,4 @@ spc.class[which(is.na(spc.class[,3])),3] <- "none"
 all.spc.df$season <- spc.class$season
 all.spc.df$season <- factor(all.spc.df$season, levels = seas.list)
 
-rm(spc.class, id, j)
+rm(spc.class, id, j, individual.flights)
