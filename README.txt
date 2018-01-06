@@ -2,27 +2,30 @@ moths_project
 │
 ├── Code
 │   │
-│   ├── 0_extract_mean_temp.py------------python script to extract data from
+│   ├── 0.0_run_moths_project.R-----------sources all R scripts and performs
+│   │                                     sensitivity analysis
+│   │
+│   ├── 0.1_functions.R-------------------code for functions used in project
+│   │
+│   │
+│   ├── 1_read_sort_data.R----------------reads in moth and climate data and
+│   │                                     produces some useful summaries
+│   │
+│   ├── 2_analyse_climate.R---------------analysis of climate data
+│   │
+│   ├── 3_select_&_adjust_abundance.R-----select species for analysis & adjust
+│   │                                     FFD/LFD by sampling to least abundant
+│   │                                     year
+│   │
+│   ├── 4_effects_on_moths.R--------------are moths flying earlier/later/longer
+│   │
+│   ├── 5_the_model.R---------------------produces general lines model from the
+│   │                                     data and plots for each species
+│   │
+│   ├── extract_mean_temp.py--------------python script to extract data from
 │   │                                     required grid squares
 │   │
-│   ├── 0_run_moths_project.R-------------sources all R scripts
-│   │
-│   ├── 1-read_in_data.R------------------reads in moth and climate data
-│   │
-│   ├── 2_sorting_data.R------------------sorts data ready for analysis
-│   │
-│   ├── 3_adjusting_abundance.R-----------adjusts FFD/LFD by sampling to least
-│   │                                     abundant year
-│   │
-│   ├── 4_species_classifications.R-------classifies species into season
-│   │
-│   ├── 5_climate_analysis.R--------------analysis of climate data
-│   │
-│   ├── 6_effect_on_moths.R---------------are moths flying earlier/later/longer
-│   │
-│   ├── 7_the_model.R---------------------
-│   │
-│   └──Legacy-----------------------------contains old code still to be sorted
+│   └──Legacy-----------------------------contains old code still to be sorted
 │       │
 │       ├── aaFlight Period.R
 │       ├── Example species figure.R

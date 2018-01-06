@@ -30,8 +30,8 @@ message("\nAnalysing climate data")
 source("2_analyse_climate.R")
 message("-Done\n")
 
-for (X in 3){  # c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
-  for (N in 20){  # c(1, 5, 10, 15, 20, 25)){  # min years
+for (X in c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
+  for (N in c(1, 5, 10, 15, 20, 25)){  # min years
     cat("\n==================================================================")
     message(paste0("\nstarting analysis with X = ", X, " and N = ", N))
     cat("==================================================================\n")
@@ -63,7 +63,8 @@ for (X in 3){  # c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
                                 'seas.list',
                                 'seasons',
                                 'temperature.analysis',
-                                'temperatures'))])
+                                'temperatures',
+                                'X', 'N'))])
     message("-Done\n")
   }
 }

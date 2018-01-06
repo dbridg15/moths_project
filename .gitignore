@@ -1,4 +1,5 @@
 .*
 !/.gitignore
 *.pyc
+*.pdf
 Climate_Source/

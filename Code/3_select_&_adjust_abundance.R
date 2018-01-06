@@ -1,7 +1,7 @@
 #!usr/bin/env Rscript
 
-# script: selecting_species.R
-# Desc: sorts out data ready for analysis
+# script: 3_select_&_adjust_abundance.R
+# Desc:   sorts out data ready for analysis
 # Author: David Bridgwood (dmb2417@ic.ac.uk)
 
 
@@ -13,32 +13,35 @@ if (exists("X") == FALSE) { X <- 3  }  # no. sightings to take mean day from
 if (exists("V") == FALSE) { V <- 1  }  # Minimum Flight Period
 if (exists("N") == FALSE) { N <- 20 }  # Number of years with min flight period
 
-
 ###############################################################################
 # flight - first flight day, last flight day, flight period for each species
 ###############################################################################
 
+# set up array to hold flight data for all species
 flight <- array(data = NA, dim = c(393,4,25), dimnames = NULL)
-
 colnames(flight) <- c('FFD','LFD','FP','Fpos')
+rownames(flight) <- all.spc.df$id
 
-for (yr in 1:25){  # for 25 years of moth data
+for (yr in 1:25){     # for 25 years of moth data
   for (id in 1:393){  # and all 393 species
     # list of days where species was seen
     FlightDays  <- which(moths[id,1:365,yr] > 0)
     if (length(FlightDays) > X){  # if there are enough to calculate from
+      # FFD is mean of first X days
       flight[id,1,yr] <- mean(FlightDays[1:X])
+      # LFD is mean of last X days
       flight[id,2,yr] <- (mean(FlightDays[(length(FlightDays)-(X-1)):
                                (length(FlightDays))]))
+      # flight period is LFD - FFD
       flight[id,3,yr] <- (as.numeric(flight[id,2,yr]) -
                           as.numeric(flight[id,1,yr]))
+      # flight position is middle of FFD and LFD
       flight[id,4,yr] <- mean(flight[id,1:2,yr])
     }
   }
 }
 
-rownames(flight) <- all.spc.df$id
-
+# cleanup
 rm(FlightDays,id,yr)
 
 
@@ -46,6 +49,7 @@ rm(FlightDays,id,yr)
 # selecting species for analysis
 ###############################################################################
 
+# matrix to hold flight period for all species in all years
 FP <- matrix(nrow=393, ncol=25)
 
 # Which species meet the minimum requirement in what years
@@ -89,6 +93,7 @@ ss.msummary <- msummary[as.character(ss.df$id),]
 # number of selected species
 ss.num <- nrow(ss.df)
 
+# cleanup
 rm(FP, id, selspc, flight)
 
 
@@ -96,9 +101,9 @@ rm(FP, id, selspc, flight)
 # adjusted for abundance
 ###############################################################################
 
+# abundance adjusted flight for selected species
 aa.ss.flight <- array(data = NA, dim = c(nrow(ss.flight),4,25),
                       dimnames = NULL)
-
 colnames(aa.ss.flight) <- c("FFD", "LFD", "FP", "Fpos")
 rownames(aa.ss.flight) <- ss.df$id
 
@@ -109,7 +114,7 @@ for (id in as.character(ss.df$id)){
 
   for (yr in 1:25){
     temp <- as.numeric(ss.moths[id,,yr])  # how many flew on each day
-    temp[is.na(temp)] <- 0  # no flights (NA) is 0
+    temp[is.na(temp)] <- 0                # no flights (NA) is 0
     temp1 <- c()
 
     # put day number in list as many times as species was seen on day
@@ -168,4 +173,5 @@ for (id in as.character(ss.df$id)){
   }
 }
 
+# cleanup
 rm(aa.FFD, aa.LFD, yr, i, temp, temp1, id, day, FD.Rarf, FD.list, minsize)

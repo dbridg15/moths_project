@@ -1,7 +1,7 @@
 #!usr/bin/env Rscript
 
-# script: climate.R
-# Desc: analysis of climate data
+# script: 3_analyse_climate.R
+# Desc:   analysis of climate data
 # Author: David Bridgwood (dmb2417@ic.ac.uk)
 
 
@@ -41,14 +41,15 @@ rm(i, yr, cons)
 ###############################################################################
 
 # ****if you get more time do for only 1990-2014****
-# get some numbers
 
+# initialise dataframe to put results in
 temperature.analysis <- data.frame('time_period' =colnames(temperatures)[2:19])
 temperature.analysis$slope <- NA
 temperature.analysis$p.val <- NA
 temperature.analysis$r.sqr <- NA
 
-for (i in 2:19){
+
+for (i in 2:19){  #2-19 bc 1 is year (not a temperature measure)
   mdl <- lm(as.numeric(unlist(temperatures[i])) ~ temperatures$year)
   temperature.analysis$slope[i-1] <- as.numeric(coef(mdl)[2])  # slope
   temperature.analysis$p.val[i-1] <- as.numeric(anova(mdl)$'Pr(>F)'[1]) # p
@@ -68,9 +69,10 @@ for (i in 2:19){
       ggtitle(paste("slope:", temperature.analysis$slope[i-1], "\n",
                     "P Value:", temperature.analysis$p.val[i-1], "\n",
                     "R Squared:", temperature.analysis$r.sqr[i-1]))
-  suppressWarnings(print(a))
+  suppressMessages(print(a))
 }
 
-dev.off()
+dev.off()  # close pdf
 
+# cleanup
 rm(i, mdl, a)
