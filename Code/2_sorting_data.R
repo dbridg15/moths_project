@@ -15,7 +15,6 @@ if (exists("N") == FALSE) { N <- 20 }  # Number of years with min flight period
 if (exists("Z") == FALSE) { Z <- 5  }  # Threshold Temperature (for cons)
 if (exists("Q") == FALSE) { Q <- 10 }  # Threshold number of Days (for cons)
 
-
 ###############################################################################
 # flight - first flight day, last flight day, flight period for each species
 ###############################################################################
@@ -88,11 +87,15 @@ ss.moths.yrsum <- apply(ss.moths, c(1,2), sum, na.rm = TRUE)
 # ss.msummary is msummary for selected species
 ss.msummary <- msummary[as.character(ss.df$id),]
 
+# number of selected species
+ss.num <- nrow(ss.df)
+
 rm(FP, id, selspc)
 
 ###############################################################################
 # consecutive days (cons)
 ###############################################################################
+
 
 # it will just be a list of day numbers
 cons <- vector(mode = "numeric", length = 55)

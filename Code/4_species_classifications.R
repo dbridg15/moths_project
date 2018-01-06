@@ -31,7 +31,7 @@ rm(first.day, last.day)
 
 # list of vectors contain day all individuals were caught for given species
 # i.e. if day 167 had 3 of that species lits would have ... 167, 167, 167, ...
-individual.flights <- rep(list(c()), 110)
+individual.flights <- rep(list(c()), ss.num)
 i <- 1  # starting counter
 
 for (id in as.character(ss.df$id)){
@@ -50,19 +50,19 @@ for (id in as.character(ss.df$id)){
 rm(i, tmp, day, id, daily.spc.count)
 
 # class
-class <- matrix(nrow=110,ncol=3)
+class <- matrix(nrow = ss.num, ncol = 3)
 
 colnames(class) <- c("12.5%", "87.5%", "season")
 rownames(class) <- ss.df$id
 
-for (id in 1:110){
+for (id in 1:ss.num){
   class[id,1] <- quantile(individual.flights[[id]],c(.125,.875))[1]
   class[id,2] <- quantile(individual.flights[[id]],c(.125,.875))[2]
 }
 
 class <- as.data.frame(class)
 
-for (id in 1:110){
+for (id in 1:ss.num){
 
   for (j in c(1, 3, 5, 7, 9, 11, 13, 15)){  # top of hierarchy: early/late
     if ( (class[id,1] >= seasons[j,2]) & (class[id,1] <= seasons[j,3]) &

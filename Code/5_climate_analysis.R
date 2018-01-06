@@ -4,8 +4,6 @@
 # Desc: analysis of climate data
 # Author: David Bridgwood (dmb2417@ic.ac.uk)
 
-# packages
-require('ggplot2')
 
 ###############################################################################
 # making temperatures data frame

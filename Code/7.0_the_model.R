@@ -4,8 +4,6 @@
 # Desc:
 # Author: David Bridgwood (dmb2417@ic.ac.uk)
 
-# require
-require(lme4)
 
 ###############################################################################
 # putting together the dataframe ready for it!
@@ -17,11 +15,11 @@ mdl.df <- data.frame("id"    = NA, "season" = NA, "year" = NA, "ytemp" = NA,
                      "FP"    = NA, "Fpos"   = NA)
 
 # temporary df with same column headings
-tmp <- data.frame("id"    = rep(NA, 110), "season" = rep(NA, 110),
-                  "year"  = rep(NA, 110), "ytemp"  = rep(NA, 110),
-                  "stemp" = rep(NA, 110), "winter" = rep(NA, 110),
-                  "FFD"   = rep(NA, 110), "LFD"    = rep(NA, 110),
-                  "FP"    = rep(NA, 110), "Fpos"   = rep(NA, 110))
+tmp <- data.frame("id"    = rep(NA, ss.num), "season" = rep(NA, nrow(ss.df)),
+                  "year"  = rep(NA, ss.num), "ytemp"  = rep(NA, nrow(ss.df)),
+                  "stemp" = rep(NA, ss.num), "winter" = rep(NA, nrow(ss.df)),
+                  "FFD"   = rep(NA, ss.num), "LFD"    = rep(NA, nrow(ss.df)),
+                  "FP"    = rep(NA, ss.num), "Fpos"   = rep(NA, nrow(ss.df)))
 
 for (yr in 1:25){
   tmp$id     <- ss.df$id
@@ -34,7 +32,7 @@ for (yr in 1:25){
   tmp$FP     <- aa.ss.flight[,3,yr]
   tmp$Fpos   <- aa.ss.flight[,4,yr]
 
-  for (id in 1:110){
+  for (id in 1:ss.num){
     tmp$stemp[id] <- temperatures[yr+30, as.character(tmp$season[id])]
   }
   mdl.df <- rbind(mdl.df, tmp)
@@ -51,7 +49,7 @@ mdl.df$season <- factor(mdl.df$season, levels = seas.list)
 # making the model
 ###############################################################################
 
-pdf("../Results/model_plots.pdf")
+pdf(paste0("../Results/model_plots_", X, "_", N, ".pdf"))
 
 expl <- c("ytemp", "stemp", "winter")
 
@@ -61,11 +59,11 @@ for (i in expl){
 ffd.model   <- lmer(FFD ~ (1|year) + (mdl.df[,i]|id), data = mdl.df)
 ffd.fixeff  <- fixef(ffd.model)
 ffd.randeff <- ranef(ffd.model)
-ffd.slope     <- vector(length=110)
-ffd.intercept <- vector(length=110)
+ffd.slope     <- vector(length=ss.num)
+ffd.intercept <- vector(length=ss.num)
 
 temps <- 7:13
-for (s in 1:110){
+for (s in 1:ss.num){
   ln <-  coef(lm(ffd.fixeff[1] + ffd.randeff$id[s,1] +
                  ffd.randeff$id[s,2]*temps~temps))
 
@@ -78,11 +76,11 @@ for (s in 1:110){
 lfd.model     <- lmer(LFD ~ (1|year) + (mdl.df[, i]|id), data = mdl.df)
 lfd.fixeff    <- fixef(lfd.model)
 lfd.randeff   <- ranef(lfd.model)
-lfd.slope      <- vector(length=110)
-lfd.intercept <- vector(length=110)
+lfd.slope      <- vector(length=ss.num)
+lfd.intercept <- vector(length=ss.num)
 
 temps <- 7:13
-for (s in 1:110){
+for (s in 1:ss.num){
   ln <- coef(lm(lfd.fixeff[1] + lfd.randeff$id[s,1] +
                 lfd.randeff$id[s,2]*temps~temps))
 
