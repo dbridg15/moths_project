@@ -94,7 +94,12 @@ for (s in 1:ss.num){
 prty.plt.df <- cbind(ss.df[ , c(1,4)], ffd.slope, ffd.intercept,
                                        lfd.slope, lfd.intercept)
 prty.plt.df$season <- factor(prty.plt.df$season, levels = rev(seas.list))
-source("7.1_plot.R")
+source("5.1_plots.R")
+
+nam = paste0(i, ".models")
+assign(nam, c(ffd.model, lfd.model))
+
+rm(nam,ffd.model, lfd.model)
 
 }
 
