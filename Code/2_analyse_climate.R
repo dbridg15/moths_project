@@ -57,7 +57,7 @@ for (i in 2:19){  #2-19 bc 1 is year (not a temperature measure)
 }
 
 # plots
-pdf("../Results/temperature_plots.pdf", width = 10, height = 7.5)
+pdf("../Results/plots/climate/temperature_plots.pdf", width = 10, height = 7.5)
 
 for (i in 2:19){
  a <- ggplot(temperatures, aes(year, temperatures[i])) +

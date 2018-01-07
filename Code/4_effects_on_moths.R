@@ -121,7 +121,7 @@ rm(i, x, y, msr, expl, sig.list, tmp)
 ###############################################################################
 
 # open pdf for plots
-pdf(paste0("../Results/empirical_plots_", X, "_", N, ".pdf"))
+pdf(paste0("../Results/plots/empirical/empirical_plots_", X, "_", N, ".pdf"))
 
 # for each measure set up a datframe and put through PrettyPlots function
 for (msr in c("ytemp", "stemp", "winter", "cons")){

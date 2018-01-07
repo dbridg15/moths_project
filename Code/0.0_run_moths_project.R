@@ -1,7 +1,7 @@
 #!usr/bin/env Rscript
 
 # script: 0_run_moths_project.R
-# Desc: runs the project
+# Desc:   runs the project
 # Author: David Bridgwood (dmb2417@ic.ac.uk)
 
 rm(list = ls())
@@ -13,7 +13,6 @@ require(ggplot2)
 require(RColorBrewer)
 require(gridExtra)
 require(lme4)
-
 
 ###############################################################################
 #
@@ -50,10 +49,11 @@ for (X in c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
     message("-Done\n")
 
     message("\nsaving the data!")
-    filename <- paste0("../Results/", X, "_", N, ".rda")
+    filename <- paste0("../Results/r_data/", X, "_", N, ".rda")
     save(aa.ss.flight, chi.rslts, mdl.df, ss.df, stemp.models,
          winter.models, ytemp.models, file = filename)
-    rm(list= ls()[!(ls() %in% c('all.spc.df','cons',
+    rm(list= ls()[!(ls() %in% c('all.spc.df',
+                                'cons',
                                 'daily.temp',
                                 'individual.flights',
                                 'moths',
@@ -65,14 +65,19 @@ for (X in c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
                                 'temperature.analysis',
                                 'temperatures',
                                 'X',
-                                'N'))])
+                                'N',
+                                'start.time'))])
     message("-Done\n")
   }
 }
+
+message("\nsorting resulst\n")
+source("6_sorting_results.R")
+message("-Done\n")
 
 cat("\n==================================================================")
 message("\nFinished!!")
 cat("==================================================================\n\n")
 
 message("Warnings:\n")
-Warnings()
+warnings()

@@ -57,7 +57,7 @@ rm(tmp, yr, id)
 ###############################################################################
 
 # initialise pdf for plots
-pdf(paste0("../Results/model_plots_", X, "_", N, ".pdf"))
+pdf(paste0("../Results/plots/model/model_plots_", X, "_", N, ".pdf"))
 
 # will do models for each of these explanatory variables
 expl <- c("ytemp", "stemp", "winter")
