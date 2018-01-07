@@ -60,7 +60,7 @@ rm(tmp, yr, id)
 pdf(paste0("../Results/model_plots_", X, "_", N, ".pdf"))
 
 # will do models for each of these explanatory variables
-expl <- c("ytemp", "stemp", "winter", "cons")
+expl <- c("ytemp", "stemp", "winter")
 
 for (i in expl){
 
@@ -108,6 +108,7 @@ for (i in expl){
 
   # put ffd and lfd models in list to be saved
   nam = paste0(i, ".models")
+
   assign(nam, c(ffd.model, lfd.model))
 
   # cleanup

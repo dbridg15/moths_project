@@ -6,6 +6,7 @@
 
 rm(list = ls())
 graphics.off()
+# options(warn=2)  # warnings to errors
 
 # require
 require(ggplot2)
@@ -31,7 +32,7 @@ source("2_analyse_climate.R")
 message("-Done\n")
 
 for (X in c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
-  for (N in c(1, 5, 10, 15, 20, 25)){  # min years
+  for (N in c(3, 5, 10, 15, 20, 25)){  # min years
     cat("\n==================================================================")
     message(paste0("\nstarting analysis with X = ", X, " and N = ", N))
     cat("==================================================================\n")
@@ -50,10 +51,9 @@ for (X in c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
 
     message("\nsaving the data!")
     filename <- paste0("../Results/", X, "_", N, ".rda")
-    save(aa.ss.flight, chi.rslts, cons.models, mdl.df, ss.df, stemp.models,
+    save(aa.ss.flight, chi.rslts, mdl.df, ss.df, stemp.models,
          winter.models, ytemp.models, file = filename)
-    rm(list= ls()[!(ls() %in% c('all.spc.df',
-                                'cons',
+    rm(list= ls()[!(ls() %in% c('all.spc.df','cons',
                                 'daily.temp',
                                 'individual.flights',
                                 'moths',
@@ -64,7 +64,8 @@ for (X in c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
                                 'seasons',
                                 'temperature.analysis',
                                 'temperatures',
-                                'X', 'N'))])
+                                'X',
+                                'N'))])
     message("-Done\n")
   }
 }
@@ -72,3 +73,6 @@ for (X in c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
 cat("\n==================================================================")
 message("\nFinished!!")
 cat("==================================================================\n\n")
+
+message("Warnings:\n")
+Warnings()

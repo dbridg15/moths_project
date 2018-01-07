@@ -27,6 +27,8 @@ for (i in tocalc){
   ss.df[i] <- NA
 }
 
+rm(i)
+
 # dataframe containing the explanatory variables
 expl.df <- temperatures[31:55,c("year", "ytemp", "winter", "cons")]
 expl.df$stemp <- NA  # will be specific for each species
@@ -52,6 +54,7 @@ for (id in as.character(ss.df$id)){
   # reset stemp to NA
   expl.df$stemp <- NA
 }
+
 
 # cleanup
 rm(expl.df, id, a, b, mdl, val, p)
