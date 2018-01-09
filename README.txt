@@ -1,8 +1,44 @@
+###############################################################################
+# moths_project
+###############################################################################
+
+Author: David Bridgwood (dmb2417@ic.ac.uk)
+
+Desc  : project to determine if the timing of moth flights (first flight day
+        and last flight day) are being affected by changing climate
+        (specifically temperature)
+
+* To run project set wd to moths_project/Code/ and Rscript/source the file
+  0.0_run_moths_project.R  approx 30 min runtime
+
+###############################################################################
+# known issues/to do
+###############################################################################
+
+* Current choice of colour gradient for combined plot does not have enough
+  colours for all seasons when more leniant values are used in sensitivity
+  analysis
+
+###############################################################################
+# required R packages
+###############################################################################
+
+ggplot2        # for all plots
+RColorBrewer   # for colour gradient of seaons on combined plots
+gridExtra      # for putting together combined plot
+lme4           # for models
+reshape2       # for reshaping dataframes
+
+###############################################################################
+# repository structure
+###############################################################################
+
 moths_project/
 │
 ├── Code/
 │   │
-│   ├── 0.0_run_moths_project.R-----------sources all R scripts and performs
+│   ├── 0.0_run_moths_project.R-----------source/Rscript this file to run the
+│   │                                     project - set variables for
 │   │                                     sensitivity analysis
 │   │
 │   ├── 0.1_functions.R-------------------code for functions used in project
@@ -79,7 +115,8 @@ moths_project/
 │       │
 │       └── Speciesindexlist.csv--------species index list id, B&F, common name
 │
-└── Results/
+└── Results/----------------------------files in this directory are produced
+    │                                   when the project is run
     │
     ├── ChiSqr_Results.csv--------------csv with results from Chi-Squared tests
     │                                   for each measure/values of X/N from

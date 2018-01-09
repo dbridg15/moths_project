@@ -1,27 +1,35 @@
 #!usr/bin/env Rscript
 
 # script: 0_run_moths_project.R
-# Desc:   runs the project
+# Desc:   source/Rscript this file to run project
 # Author: David Bridgwood (dmb2417@ic.ac.uk)
 
+# clear the R workspace
 rm(list = ls())
 graphics.off()
 # options(warn=2)  # warnings to errors
 
 # require
-require(ggplot2)
-require(RColorBrewer)
-require(gridExtra)
-require(lme4)
+require(ggplot2)       # for all plots
+require(RColorBrewer)  # for colour gradient of seaons on combined plots
+require(gridExtra)     # for putting together combined plot
+require(lme4)          # for models
+require(reshape2)      # for reshaping dataframes
 
 ###############################################################################
-#
+# setting values for run
 ###############################################################################
 
-# setting values for sesitivity analysis
+# values for sesitivity analysis ***MUST INCLUDE X=3 and N=20 TO RUN***
 X.vals <- c(1, 3, 5, 10, 15, 25)    # sightings for mean ffd day
 N.vals <- c(3, 5, 10, 15, 20, 25)   # minimum years to include
 
+# setting colour gradient for combined plots (from RColorBrewer)
+colgrad <- "RdYlGn"
+
+###############################################################################
+# starting project
+###############################################################################
 
 message("\nReading in functions")
 source("0.1_functions.R")
@@ -73,13 +81,18 @@ for (X in X.vals){
                                 'N',
                                 'start.time',
                                 'X.vals',
-                                'N.vals'))])
+                                'N.vals',
+                                'colgrad'))])
     message("-Done\n")
   }
 }
 
-message("\nsorting results\n")
+message("\nsorting results")
 source("6_sorting_results.R")
+message("-Done\n")
+
+message("\nexample species plots")
+source("7_example_plots.R")
 message("-Done\n")
 
 cat("\n==================================================================")

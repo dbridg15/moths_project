@@ -56,23 +56,38 @@ for (i in 2:19){  #2-19 bc 1 is year (not a temperature measure)
   temperature.analysis$r.sqr[i-1] <- as.numeric(summary(mdl)[8])  # R squared
 }
 
+
+###############################################################################
+# the plots (one for each season)
+###############################################################################
+
+# setting up dataframe for plot
+plt.df <- temperatures
+plt.df$mothyear <- "no"  # will have seperate regression line for 1990:2014
+
+tmp <- subset(temperatures, year > 1989)
+tmp$mothyear <- "yes"
+plt.df <- rbind(plt.df, tmp)
+
 # plots
 pdf("../Results/plots/climate/temperature_plots.pdf", width = 10, height = 7.5)
 
 for (i in 2:19){
- a <- ggplot(temperatures, aes(year, temperatures[i])) +
-      labs(x = "Years",
-           y = paste("Mean Temperature", colnames(temperatures)[i])) +
-      theme_classic() +
-      geom_point() +
-      geom_smooth(method = 'lm', col = 'black') +
-      ggtitle(paste("slope:", temperature.analysis$slope[i-1], "\n",
-                    "P Value:", temperature.analysis$p.val[i-1], "\n",
-                    "R Squared:", temperature.analysis$r.sqr[i-1]))
-  suppressMessages(print(a))
+  temp.plt <- ggplot(plt.df, aes(year, plt.df[i], color = mothyear))
+  temp.plt <- temp.plt + labs(x = "Years",
+                              y = paste("Mean Temp.", colnames(plt.df)[i]))
+  temp.plt <- temp.plt + theme_classic()
+  temp.plt <- temp.plt + geom_point()
+  temp.plt <- temp.plt + geom_smooth(method = 'lm')
+  temp.plt <- temp.plt + ggtitle(
+                       paste("slope:", temperature.analysis$slope[i-1], "\n",
+                             "P Value:", temperature.analysis$p.val[i-1], "\n",
+                             "R Squared:", temperature.analysis$r.sqr[i-1]))
+
+  suppressMessages(print(temp.plt))
 }
 
 dev.off()  # close pdf
 
 # cleanup
-rm(i, mdl, a)
+rm(i, mdl, temp.plt, plt.df, tmp)
