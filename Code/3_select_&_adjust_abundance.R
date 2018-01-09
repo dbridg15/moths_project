@@ -94,7 +94,7 @@ ss.msummary <- msummary[as.character(ss.df$id),]
 ss.num <- nrow(ss.df)
 
 # cleanup
-rm(FP, id, selspc, flight)
+rm(FP, id, selspc)
 
 
 ###############################################################################

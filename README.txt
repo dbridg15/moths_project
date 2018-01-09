@@ -1,6 +1,6 @@
-moths_project
+moths_project/
 │
-├── Code
+├── Code/
 │   │
 │   ├── 0.0_run_moths_project.R-----------sources all R scripts and performs
 │   │                                     sensitivity analysis
@@ -22,27 +22,18 @@ moths_project
 │   ├── 5_the_model.R---------------------produces general lines model from the
 │   │                                     data and plots for each species
 │   │
-│   ├── extract_mean_temp.py--------------python script to extract data from
-│   │                                     required grid squares
+│   ├── 6_sorting_results.R---------------reads in and amalgamates results and
+│   │                                     saves to csv file
 │   │
-│   └──Legacy-----------------------------contains old code still to be sorted
-│       │
-│       ├── aaFlight Period.R
-│       ├── Example species figure.R
-│       ├── Figures.R
-│       ├── Flight Period.R
-│       ├── Model-DAVID.R
-│       ├── Model.R
-│       ├── phenology hypothesis.R
-│       ├── Season plot-DAVID.R
-│       ├── Season plot.R
-│       ├── seasontemp and number.R
-│       ├── Sensitivity.R
-│       └── shcplot.R
+│   ├── 7_example_plots.R-----------------plots FFD and LFD response for exampl
+│   │                                     species (Silver-ground carpet)
+│   │
+│   └── extract_mean_temp.py--------------python script to extract data from
+│                                         required grid squares
 │
-├── Data
+├── Data/
 │   │
-│   ├── Climate--------------------------contains all climate data
+│   ├── Climate/-------------------------contains all climate data
 │   │   │
 │   │   ├── MeanTemp_1.csv-------------⎤
 │   │   ├── MeanTemp_2.csv-------------⎥
@@ -54,9 +45,9 @@ moths_project
 │   │   ├── MeanTemp_8.csv-------------⎥
 │   │   └── MeanTemp_9.csv-------------⎦
 │   │
-│   ├── Climate_Source-------------------RAW climate data (in .gitignore)
+│   ├── Climate_Source/------------------RAW climate data (in .gitignore)
 │   │
-│   └── Moths----------------------------contains all moth filght data
+│   └── Moths/---------------------------contains all moth filght data
 │       │
 │       ├── Days.csv---------------------days where no moths were recorded
 │       │
@@ -88,4 +79,16 @@ moths_project
 │       │
 │       └── Speciesindexlist.csv--------species index list id, B&F, common name
 │
-└── Results-----------------------------where results go!
+└── Results/
+    │
+    ├── ChiSqr_Results.csv--------------csv with results from Chi-Squared tests
+    │                                   for each measure/values of X/N from
+    │                                   sensitivity analysis
+    │
+    ├── Models_summary.txt--------------summary of every model for for each run
+    │                                   of the sensitivity analysis
+    │
+    ├── plots/--------------------------pdfs of plots are saved here
+    │
+    └── r_data/-------------------------.rda files from each run of the
+                                        sensitivity analysis are saved here

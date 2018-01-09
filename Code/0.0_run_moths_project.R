@@ -18,6 +18,11 @@ require(lme4)
 #
 ###############################################################################
 
+# setting values for sesitivity analysis
+X.vals <- c(1, 3, 5, 10, 15, 25)    # sightings for mean ffd day
+N.vals <- c(3, 5, 10, 15, 20, 25)   # minimum years to include
+
+
 message("\nReading in functions")
 source("0.1_functions.R")
 message("-Done\n")
@@ -30,8 +35,8 @@ message("\nAnalysing climate data")
 source("2_analyse_climate.R")
 message("-Done\n")
 
-for (X in c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
-  for (N in c(3, 5, 10, 15, 20, 25)){  # min years
+for (X in X.vals){
+  for (N in N.vals){
     cat("\n==================================================================")
     message(paste0("\nstarting analysis with X = ", X, " and N = ", N))
     cat("==================================================================\n")
@@ -51,7 +56,7 @@ for (X in c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
     message("\nsaving the data!")
     filename <- paste0("../Results/r_data/", X, "_", N, ".rda")
     save(aa.ss.flight, chi.rslts, mdl.df, ss.df, stemp.models,
-         winter.models, ytemp.models, file = filename)
+         winter.models, ytemp.models, flight, file = filename)
     rm(list= ls()[!(ls() %in% c('all.spc.df',
                                 'cons',
                                 'daily.temp',
@@ -66,12 +71,14 @@ for (X in c(1, 3, 5, 10, 15, 25)){  # sightings for mean ffd day
                                 'temperatures',
                                 'X',
                                 'N',
-                                'start.time'))])
+                                'start.time',
+                                'X.vals',
+                                'N.vals'))])
     message("-Done\n")
   }
 }
 
-message("\nsorting resulst\n")
+message("\nsorting results\n")
 source("6_sorting_results.R")
 message("-Done\n")
 
