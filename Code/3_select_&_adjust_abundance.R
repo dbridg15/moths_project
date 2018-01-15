@@ -22,21 +22,14 @@ flight <- array(data = NA, dim = c(393,4,25), dimnames = NULL)
 colnames(flight) <- c('FFD','LFD','FP','Fpos')
 rownames(flight) <- all.spc.df$id
 
-for (yr in 1:25){     # for 25 years of moth data
-  for (id in 1:393){  # and all 393 species
-    # list of days where species was seen
-    FlightDays  <- which(moths[id,1:365,yr] > 0)
-    if (length(FlightDays) > X){  # if there are enough to calculate from
-      # FFD is mean of first X days
-      flight[id,1,yr] <- mean(FlightDays[1:X])
-      # LFD is mean of last X days
-      flight[id,2,yr] <- (mean(FlightDays[(length(FlightDays)-(X-1)):
-                               (length(FlightDays))]))
-      # flight period is LFD - FFD
-      flight[id,3,yr] <- (as.numeric(flight[id,2,yr]) -
-                          as.numeric(flight[id,1,yr]))
-      # flight position is middle of FFD and LFD
-      flight[id,4,yr] <- mean(flight[id,1:2,yr])
+for (yr in 1:25){
+  for (id in 1:393){
+    FlightDays  <- which(moths[id, 1:365, yr] > 0)  # days a species was seen
+    if (length(FlightDays) > X){
+      flight[id, 'FFD',  yr] <- mean(head(FlightDays, 3))
+      flight[id, 'LFD',  yr] <- mean(tail(FlightDays, 3))
+      flight[id, 'FP',   yr] <- flight[id, 'LFD', yr] - flight[id, 'FFD' ,yr]
+      flight[id, 'Fpos', yr] <- mean(flight[id, 1:2, yr])
     }
   }
 }
@@ -54,10 +47,9 @@ FP <- matrix(nrow=393, ncol=25)
 
 # Which species meet the minimum requirement in what years
 for (yr in 1:25){
-  for (id in 1:393){
-    FP[id,yr] <- as.numeric(flight[id, 3, yr] >= V)
-  }
+  FP[ , yr] <- flight[ , 'FP', yr] >= V
 }
+
 
 FP[is.na(FP)] <- 0
 

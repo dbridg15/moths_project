@@ -224,3 +224,28 @@ all.spc.df$season <- factor(all.spc.df$season, levels = seas.list)
 
 # cleanup
 rm(spc.class, id, j, individual.flights)
+
+
+###############################################################################
+# FlightDays list
+###############################################################################
+
+for (id in as.character(ss.df$id)){
+
+  # list of empty vectors to put in flight days for all years
+  FD.list <- rep(list(c()), 25)
+
+  for (yr in 1:25){
+    temp <- as.numeric(ss.moths[id,,yr])  # how many flew on each day
+    temp[is.na(temp)] <- 0                # no flights (NA) is 0
+    temp1 <- c()
+
+    # put day number in list as many times as species was seen on day
+    for (day in 1:365){
+      temp1 <- c(temp1, seq(from = day, by=0, length.out=temp[day]))
+    }
+    FD.list[[yr]] <- temp1
+  }
+}
+
+
