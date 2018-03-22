@@ -32,7 +32,7 @@ colgrad <- "RdYlGn"
 ###############################################################################
 
 message("\nReading in functions")
-source("0.1_functions.R")
+source("functions.R")
 message("-Done\n")
 
 message("\nReading in data...")
