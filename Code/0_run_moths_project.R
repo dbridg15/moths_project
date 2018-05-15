@@ -16,13 +16,25 @@ require(gridExtra)     # for putting together combined plot
 require(lme4)          # for models
 require(reshape2)      # for reshaping dataframes
 
+
 ###############################################################################
 # setting values for run
 ###############################################################################
 
-# values for sesitivity analysis ***MUST INCLUDE X=3 and N=20 TO RUN***
-X.vals <- c(1, 3, 5, 10, 15, 25)    # sightings for mean ffd day
-N.vals <- c(3, 5, 10, 15, 20, 25)   # minimum years to include
+with_sensitivity <- FALSE  # set to TRUE to run with sensitivity analysis
+
+# run with sensitivity analysis?
+if (with_sensitivity == FALSE){
+  X.vals <- 3
+  N.vals <- 20
+
+  } else if (with_sensitivity == TRUE){
+
+  # values for sesitivity analysis ***MUST INCLUDE X=3 and N=20 TO RUN***
+  X.vals <- c(1, 3, 5, 10, 15, 25)    # sightings for mean ffd day
+  N.vals <- c(3, 5, 10, 15, 20, 25)   # minimum years to include
+
+  }
 
 # setting colour gradient for combined plots (from RColorBrewer)
 colgrad <- "RdYlGn"

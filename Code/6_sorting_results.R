@@ -49,4 +49,26 @@ for (X in X.vals){  # sightings for mean ffd day
 }
 
 all.chi.rslts <- all.chi.rslts[-1, ]  # remove top row of NAs
-write.table(all.chi.rslts, file = "../Results/ChiSqr_Results.csv")  # save
+write.csv(all.chi.rslts, file = "../Results/ChiSqr_Results.csv", row.names = F)  # save
+
+
+###############################################################################
+# table2
+###############################################################################
+
+# subset to only X = 3, N = 20
+tbl2 <- subset(all.chi.rslts, X == 3 & N == 20)
+
+# get explanatory and response variables
+tbl2$explanatory_var <- unlist(strsplit(tbl2$measure, "[.]"))[ c(T,F)]
+tbl2$response_var    <- unlist(strsplit(tbl2$measure, "[.]"))[ c(F,T)]
+
+
+tbl2 <- tbl2[c("response_var", "explanatory_var", "no.pve", "no.nve", "chi.sqr",
+               "p.val", "no.sig.pve", "no.sig.nve", "sig.chi.sqr", "sig.p.val")]
+
+tbl2 <- tbl2[c(1, 5, 17, 13, 9, 2, 6, 18, 14, 10, 3, 7, 19, 15, 11, 4, 8, 20,
+               16, 12), ]
+
+
+write.csv(tbl2, file = "../Results/Table2.csv", row.names = F)  # save

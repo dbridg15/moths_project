@@ -16,8 +16,8 @@ The following R packages are required
 
 ## How to Run
 
-Set working directorty to moths_project/Code/ and Rscript/source the file 0_run_moths_project.R
-With the default values for sensitivity analysis their is approx 30 min runtime
+Set working directory to moths_project/Code/ and Rscript/source the file 0_run_moths_project.R
+The default has sensitivity Analysis turned off and take aprox 5 mins to run. With sensitivity analysis on (see below). Run time is >30mins.
 
 In R
 
@@ -27,9 +27,13 @@ In terminal
 
 	Rscript  0_run_moths_project.R
 
-To change the values for sensitivity analysis ente the 0_run_moths_project.R file and ammend X.vals and N.vals
+## Sensitivity Analysis
 
-By default
+To turn on sensitivity analysis amend 0_run_moths_project.R file line 24.
+
+	with_sensitivity <- TRUE  # set to TRUE to run with sensitivity analysis
+
+By default sensitvity analysis runs though these values - which can be ammended.
 
 	# values for sesitivity analysis *MUST INCLUDE X=3 and N=20 TO RUN*
 	X.vals <- c(1, 3, 5, 10, 15, 25)    # sightings for mean ffd day

@@ -4,6 +4,9 @@
 # Desc:   sorts out data ready for analysis
 # Author: David Bridgwood (dmb2417@ic.ac.uk)
 
+# set seed
+set.seed(123)
+
 
 ###############################################################################
 # setting variables (if not already set)
