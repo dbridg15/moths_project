@@ -1,6 +1,6 @@
 # moths_project
 
-Author: David Bridgwood *dmb2417@ic.ac.uk*
+Author: David Bridgwood *dbridg15@gmail.com*
 
 Description: Project to determine if the timing of moth flights (first flight day and last flight day) are being affected by changing climate (specifically temperature).
 

@@ -2,7 +2,7 @@
 
 # script: 3_select_&_adjust_abundance.R
 # Desc:   sorts out data ready for analysis
-# Author: David Bridgwood (dmb2417@ic.ac.uk)
+# Author: David Bridgwood (dbridg15@gmail.com)
 
 # set seed
 set.seed(123)

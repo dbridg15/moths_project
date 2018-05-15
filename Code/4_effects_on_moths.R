@@ -2,7 +2,7 @@
 
 # script: 4_effects_on_moths.R
 # Desc:   are moths flying earlier/later/longer?
-# Author: David Bridgwood (dmb2417@ic.ac.uk)
+# Author: David Bridgwood (dbridg15@gmail.com)
 
 
 ###############################################################################

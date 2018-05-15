@@ -2,7 +2,7 @@
 
 # script: 3_analyse_climate.R
 # Desc:   analysis of climate data
-# Author: David Bridgwood (dmb2417@ic.ac.uk)
+# Author: David Bridgwood (dbridg15@gmail.com)
 
 
 ###############################################################################

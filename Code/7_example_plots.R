@@ -2,7 +2,7 @@
 
 # script: 7_example_plots.R
 # Desc:   plots FFD and LFD response for example species
-# Author: David Bridgwood (dmb2417@ic.ac.uk)
+# Author: David Bridgwood (dbridg15@gmail.com)
 
 
 ###############################################################################

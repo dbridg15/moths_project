@@ -2,7 +2,7 @@
 
 # script: 0.1_functions.R
 # Desc:   contains code for functions used in moths_project
-# Author: David Bridgwood (dmb2417@ic.ac.uk)
+# Author: David Bridgwood (dbridg15@gmail.com)
 
 # functions
 

@@ -2,7 +2,7 @@
 
 # script: 1_read_sort_data.R
 # Desc:   reads in moth and climate data and produces some useful summaries
-# Author: David Bridgwood (dmb2417@ic.ac.uk)
+# Author: David Bridgwood (dbridg15@gmail.com)
 
 
 ###############################################################################

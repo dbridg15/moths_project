@@ -2,7 +2,7 @@
 
 # script: 0_run_moths_project.R
 # Desc:   source/Rscript this file to run project
-# Author: David Bridgwood (dmb2417@ic.ac.uk)
+# Author: David Bridgwood (dbridg15@gmail.com)
 
 # clear the R workspace
 rm(list = ls())

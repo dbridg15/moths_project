@@ -4,7 +4,7 @@
 files and producing combined csv files
 Author: David Bridgwood"""
 
-__author__ = 'David Bridgwood (dmb2417@ic.ac.uk)'
+__author__ = 'David Bridgwood (dbridg15@gmail.com)'
 
 # imports
 import csv

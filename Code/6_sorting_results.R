@@ -2,7 +2,7 @@
 
 # script: 6_sorting_results.R
 # Desc:   reads in and amalgamates results
-# Author: David Bridgwood (dmb2417@ic.ac.uk)
+# Author: David Bridgwood (dbridg15@gmail.com)
 
 
 ###############################################################################

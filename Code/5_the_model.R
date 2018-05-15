@@ -2,8 +2,7 @@
 
 # script: 5_the_model.R
 # Desc:   produces a general linear model from the data and plots for each spc
-# Author: David Bridgwood (dmb2417@ic.ac.uk)
-
+# Author: David Bridgwood (dbridg15@gmail.com)
 
 ###############################################################################
 # putting together the dataframe ready for it!
