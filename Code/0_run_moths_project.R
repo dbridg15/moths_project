@@ -25,16 +25,17 @@ with_sensitivity <- FALSE  # set to TRUE to run with sensitivity analysis
 
 # run with sensitivity analysis?
 if (with_sensitivity == FALSE){
+
   X.vals <- 3
   N.vals <- 20
 
-  } else if (with_sensitivity == TRUE){
+} else if (with_sensitivity == TRUE){
 
   # values for sesitivity analysis ***MUST INCLUDE X=3 and N=20 TO RUN***
   X.vals <- c(1, 3, 5, 10, 15, 25)    # sightings for mean ffd day
   N.vals <- c(3, 5, 10, 15, 20, 25)   # minimum years to include
 
-  }
+}
 
 # setting colour gradient for combined plots (from RColorBrewer)
 colgrad <- "RdYlGn"
@@ -75,7 +76,7 @@ for (X in X.vals){
 
     message("\nsaving the data!")
     filename <- paste0("../Results/r_data/", X, "_", N, ".rda")
-    save(aa.ss.flight, chi.rslts, mdl.df, ss.df, stemp.models,
+    save(aa.ss.flight, chi.rslts, wlcx.rslts, mdl.df, ss.df, stemp.models,
          winter.models, ytemp.models, flight, file = filename)
     rm(list= ls()[!(ls() %in% c('all.spc.df',
                                 'cons',

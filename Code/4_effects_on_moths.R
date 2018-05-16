@@ -113,8 +113,67 @@ for (i in 1:nrow(chi.rslts)){
 }
 
 # cleanup
-rm(i, x, y, msr, expl, sig.list, tmp)
+rm(i, x, y, sig.list, tmp)
 
+
+###############################################################################
+# median and winlcox test
+###############################################################################
+
+# new list of to-be-calculated, every combination of expl and msr
+tocalc <- c()
+for (x in expl){ for (y in msr){
+  tocalc <- c(tocalc, paste0(x, ".", y)) }}
+
+# headers of the chi.rslts dataframe
+hdrs <- c("no.slopes", "median", "q0.05", "q0.95", "wlcx.V", "wlcx.p", "sig_no.slopes",
+          "sig_median", "sig_q0.05", "sig_q0.95", "sig_wlcx.V", "sig_wlcx.p")
+
+# wlcx.rslts is a dataframe with those headers
+wlcx.rslts <- data.frame('measure' = tocalc)
+for (i in hdrs){
+  wlcx.rslts[i] <- NA
+}
+
+wlcx.rslts$no.slopes <- nrow(ss.df)
+
+# cleanup
+rm(hdrs, tocalc)
+
+# go throgh each row of chi.rslts and do the needed calculations
+for (i in 1:nrow(wlcx.rslts)){
+  # for all slopes
+
+  wlcx.rslts$median[i] <- quantile(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")], 0.5)   # median
+  wlcx.rslts$q0.05[i]  <- quantile(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")], 0.05)  # 0.05 quantile
+  wlcx.rslts$q0.95[i]  <- quantile(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")], 0.95)  # 0.95 quantile
+
+  wlcx.rslts$wlcx.V[i] <- wilcox.test(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")])$statistic  # wilcox V stat
+  wlcx.rslts$wlcx.p[i] <- wilcox.test(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")])$p.value    # wilcox p value
+
+  # for only significant slopes
+  # list of ids with significant slopes
+  sig.list <- which(ss.df[ ,paste0(wlcx.rslts$measure[i],".p.val")] < 0.05)
+
+  if (length(sig.list) > 0){  # if there were significant slopes
+
+    wlcx.rslts$sig_no.slopes[i] <- length(sig.list)
+    wlcx.rslts$sig_median[i]    <- quantile(ss.df[sig.list,
+                                            paste0(wlcx.rslts$measure[i],".slope")], 0.5)    # median
+    wlcx.rslts$sig_q0.05[i]     <- quantile(ss.df[sig.list,
+                                            paste0(wlcx.rslts$measure[i], ".slope")], 0.05)  # 0.05 quantile
+    wlcx.rslts$sig_q0.95[i]     <- quantile(ss.df[sig.list,
+                                            paste0(wlcx.rslts$measure[i], ".slope")], 0.95)  # 0.95 quantile
+
+    wlcx.rslts$sig_wlcx.V[i]    <- wilcox.test(ss.df[sig.list,
+                                               paste0(wlcx.rslts$measure[i], ".slope")])$statistic  # wilcox V stat
+    wlcx.rslts$sig_wlcx.p[i]    <- wilcox.test(ss.df[sig.list,
+                                               paste0(wlcx.rslts$measure[i], ".slope")])$p.value    # wilcox p value
+  }
+}
+
+# cleanup
+rm(msr, expl, i, x, y, sig.list)
 
 ###############################################################################
 # making fancy plots

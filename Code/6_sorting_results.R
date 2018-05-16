@@ -6,19 +6,25 @@
 
 
 ###############################################################################
-#
+# combine results of sensitivity analysis
 ###############################################################################
 
 # if Models summary exists delete it as code appends to file!
-if (file.exists("../Results/Models_summarys.txt") == TRUE){
-    file.remove("../Results/Models_summarys.txt")
+if  (file.exists("../Results/Models_summarys.txt") == TRUE){ 
+    file.remove("../Results/Models_summarys.txt") 
 }
 
 # initialise dataframe
-all.chi.rslts <- data.frame("X" = NA, "N" = NA, "measure" = NA, "no.nve" = NA,
-                            "no.pve" = NA, "chi.sqr" = NA, "p.val" = NA,
-                            "no.sig.nve" = NA, "no.sig.pve" = NA,
-                            "sig.chi.sqr" = NA, "sig.p.val" = NA)
+all.chi.rslts  <- data.frame("X" = NA, "N" = NA, "measure" = NA, "no.nve" = NA,
+                             "no.pve" = NA, "chi.sqr" = NA, "p.val" = NA,
+                             "no.sig.nve" = NA, "no.sig.pve" = NA,
+                             "sig.chi.sqr" = NA, "sig.p.val" = NA)
+
+all.wlcx.rslts <- data.frame("X" = NA, "N" = NA, "measure" = NA, "no.slopes" = NA,
+                             "median" = NA, "q0.05" = NA, "q0.95" = NA, "wlcx.V" = NA,
+                             "wlcx.p" = NA, "sig_no.slopes" = NA, "sig_median" = NA,
+                             "sig_q0.05" = NA, "sig_q0.95" = NA, "sig_wlcx.V" = NA,
+                             "sig_wlcx.p" = NA)
 
 
 for (X in X.vals){  # sightings for mean ffd day
@@ -45,11 +51,36 @@ for (X in X.vals){  # sightings for mean ffd day
     chi.rslts$N <- N
     all.chi.rslts <- rbind(all.chi.rslts, chi.rslts)  # append to overall
 
+    # get all wlcx.rslts together - with X and N
+    wlcx.rslts$X <- X
+    wlcx.rslts$N <- N
+    all.wlcx.rslts <- rbind(all.wlcx.rslts, wlcx.rslts)  # append to overall
+
   }
 }
 
 all.chi.rslts <- all.chi.rslts[-1, ]  # remove top row of NAs
-write.csv(all.chi.rslts, file = "../Results/ChiSqr_Results.csv", row.names = F)  # save
+
+all.chi.rslts$explanatory_var <- unlist(strsplit(all.chi.rslts$measure, "[.]"))[ c(T,F)]
+all.chi.rslts$response_var    <- unlist(strsplit(all.chi.rslts$measure, "[.]"))[ c(F,T)]
+
+all.chi.rslts <- all.chi.rslts[c("X", "N", "response_var", "explanatory_var",
+                                 "no.pve", "no.nve", "chi.sqr", "p.val", "no.sig.pve",
+                                 "no.sig.nve", "sig.chi.sqr", "sig.p.val")]
+
+write.csv(all.chi.rslts, file <- "../Results/ChiSqr_Results.csv", row.names = F)  # save
+
+all.wlcx.rslts <- all.wlcx.rslts[-1, ]  # remove top row of NAs
+
+all.wlcx.rslts$explanatory_var <- unlist(strsplit(all.wlcx.rslts$measure, "[.]"))[ c(T,F)]
+all.wlcx.rslts$response_var    <- unlist(strsplit(all.wlcx.rslts$measure, "[.]"))[ c(F,T)]
+
+all.wlcx.rslts <- all.wlcx.rslts[c("X", "N", "response_var", "explanatory_var",
+                                   "no.slopes", "median", "q0.05", "q0.95", "wlcx.V",
+                                   "wlcx.p", "sig_no.slopes", "sig_median", "sig_q0.05",
+                                   "sig_q0.95", "sig_wlcx.V", "sig_wlcx.p")]
+
+write.csv(all.wlcx.rslts, file <- "../Results/Wilcox_Results.csv", row.names = F)  # save
 
 
 ###############################################################################
@@ -57,18 +88,31 @@ write.csv(all.chi.rslts, file = "../Results/ChiSqr_Results.csv", row.names = F) 
 ###############################################################################
 
 # subset to only X = 3, N = 20
-tbl2 <- subset(all.chi.rslts, X == 3 & N == 20)
+tbl2_chsqr <- subset(all.chi.rslts, X == 3 & N == 20)
 
-# get explanatory and response variables
-tbl2$explanatory_var <- unlist(strsplit(tbl2$measure, "[.]"))[ c(T,F)]
-tbl2$response_var    <- unlist(strsplit(tbl2$measure, "[.]"))[ c(F,T)]
+# needed columns in the right order
+tbl2_chsqr <- tbl2_chsqr[c("response_var", "explanatory_var", "no.pve", "no.nve",
+                           "chi.sqr", "p.val", "no.sig.pve", "no.sig.nve",
+                           "sig.chi.sqr", "sig.p.val")]
 
+# put in a neat order FFD, LFD, FP, Fpos
+tbl2_chsqr <- tbl2_chsqr[c(1, 5, 17, 13, 9, 2, 6, 18, 14, 10, 3, 7, 19, 15, 11,
+                           4, 8, 20, 16, 12), ]
 
-tbl2 <- tbl2[c("response_var", "explanatory_var", "no.pve", "no.nve", "chi.sqr",
-               "p.val", "no.sig.pve", "no.sig.nve", "sig.chi.sqr", "sig.p.val")]
+write.csv(tbl2_chsqr, file = "../Results/Table2_chisqr.csv", row.names = F)  # save
 
-tbl2 <- tbl2[c(1, 5, 17, 13, 9, 2, 6, 18, 14, 10, 3, 7, 19, 15, 11, 4, 8, 20,
-               16, 12), ]
+# **Actually going with Wilcoxon signed ranks test**
 
+tbl2_wlcx <- subset(all.wlcx.rslts, X == 3 & N == 20)
 
-write.csv(tbl2, file = "../Results/Table2.csv", row.names = F)  # save
+# needed columns in the right order
+tbl2_wlcx <- tbl2_wlcx[c("response_var", "explanatory_var", "no.slopes", "median",
+                         "q0.05", "q0.95", "wlcx.V", "wlcx.p", "sig_no.slopes",
+                         "sig_median", "sig_q0.05", "sig_q0.95", "sig_wlcx.V",
+                         "sig_wlcx.p")]
+
+# put in a neat order FFD, LFD, FP, Fpos
+tbl2_wlcx <- tbl2_wlcx[c(1, 5, 17, 13, 9, 2, 6, 18, 14, 10, 3, 7, 19, 15, 11,
+                           4, 8, 20, 16, 12), ]
+
+write.csv(tbl2_wlcx, file = "../Results/Table2_wlcx.csv", row.names = F)  # save
