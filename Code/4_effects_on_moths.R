@@ -11,12 +11,12 @@
 
 # these are the things to calcuate - setting them up as a list, they will be
 # headings in the ss.df
-expl <- c("year", "ytemp", "stemp", "winter", "cons")
 msr  <- c("FFD", "LFD", "FP", "Fpos")
+expl <- c("year", "ytemp", "cons", "winter", "stemp")
 val  <- c("slope", "intercept", "p.val", "r.sqr")
 
 tocalc <- c()
-for (x in expl){ for (y in msr){ for (z in val){
+for (x in msr){ for (y in expl){ for (z in val){
   tocalc <- c(tocalc, paste0(x, ".", y, ".", z)) }}}
 
 # cleanup
@@ -40,11 +40,11 @@ for (id in as.character(ss.df$id)){
                                                            "season"])])[31:55])
 
   # for each explanatory and measure
-  for (a in expl){
-    for (b in msr){
+  for (a in msr){
+    for (b in expl){
       p <- paste0(a, ".", b)  # prefix
       # do regression and store coefs in ss.df
-      mdl <- lm(aa.ss.flight[id, b, ] ~ unlist(expl.df[a]))
+      mdl <- lm(aa.ss.flight[id, a, ] ~ unlist(expl.df[b]))
       ss.df[id, paste0(p, ".slope")]     <- as.numeric(coef(mdl)[2])
       ss.df[id, paste0(p, ".intercept")] <- as.numeric(coef(mdl)[1])
       ss.df[id, paste0(p, ".p.val")]     <- as.numeric(anova(mdl)$'Pr(>F)'[1])
@@ -66,12 +66,12 @@ rm(expl.df, id, a, b, mdl, val, p)
 
 # new list of to-be-calculated, every combination of expl and msr
 tocalc <- c()
-for (x in expl){ for (y in msr){
+for (x in msr){ for (y in expl){
   tocalc <- c(tocalc, paste0(x, ".", y)) }}
 
 # headers of the chi.rslts dataframe
-hdrs <- c("no.nve", "no.pve", "chi.sqr", "p.val", "no.sig.nve",
-          "no.sig.pve","sig.chi.sqr", "sig.p.val")
+hdrs <- c("no.pve", "no.nve", "chi.sqr", "p.val", "no.sig.pve", "no.sig.nve",
+          "sig.chi.sqr", "sig.p.val")
 
 # chi.rslts is a dataframe with those headers
 chi.rslts <- data.frame('measure' = tocalc)
@@ -122,7 +122,7 @@ rm(i, x, y, sig.list, tmp)
 
 # new list of to-be-calculated, every combination of expl and msr
 tocalc <- c()
-for (x in expl){ for (y in msr){
+for (x in msr){ for (y in expl){
   tocalc <- c(tocalc, paste0(x, ".", y)) }}
 
 # headers of the chi.rslts dataframe
@@ -185,8 +185,8 @@ pdf(paste0("../Results/plots/empirical/empirical_plots_", X, "_", N, ".pdf"))
 # for each measure set up a datframe and put through PrettyPlots function
 for (msr in c("ytemp", "stemp", "winter", "cons")){
   tmp.df <- ss.df[,c("id", "season",
-                     paste0(msr, ".FFD.slope"), paste0(msr, ".FFD.intercept"),
-                     paste0(msr, ".LFD.slope"), paste0(msr, ".LFD.intercept"))]
+                     paste0("FFD.", msr, ".slope"), paste0("FFD.", msr, ".intercept"),
+                     paste0("LFD.", msr, ".slope"), paste0("LFD.", msr, ".intercept"))]
   # required colnames for function
   colnames(tmp.df) <- c("id", "season", "ffd.slope", "ffd.intercept",
                         "lfd.slope", "lfd.intercept")

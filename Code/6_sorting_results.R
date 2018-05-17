@@ -15,9 +15,9 @@ if  (file.exists("../Results/Models_summarys.txt") == TRUE){
 }
 
 # initialise dataframe
-all.chi.rslts  <- data.frame("X" = NA, "N" = NA, "measure" = NA, "no.nve" = NA,
-                             "no.pve" = NA, "chi.sqr" = NA, "p.val" = NA,
-                             "no.sig.nve" = NA, "no.sig.pve" = NA,
+all.chi.rslts  <- data.frame("X" = NA, "N" = NA, "measure" = NA, "no.pve" = NA,
+                             "no.nve" = NA, "chi.sqr" = NA, "p.val" = NA,
+                             "no.sig.pve" = NA, "no.sig.nve" = NA,
                              "sig.chi.sqr" = NA, "sig.p.val" = NA)
 
 all.wlcx.rslts <- data.frame("X" = NA, "N" = NA, "measure" = NA, "no.slopes" = NA,
@@ -61,8 +61,8 @@ for (X in X.vals){  # sightings for mean ffd day
 
 all.chi.rslts <- all.chi.rslts[-1, ]  # remove top row of NAs
 
-all.chi.rslts$explanatory_var <- unlist(strsplit(all.chi.rslts$measure, "[.]"))[ c(T,F)]
-all.chi.rslts$response_var    <- unlist(strsplit(all.chi.rslts$measure, "[.]"))[ c(F,T)]
+all.chi.rslts$response_var    <- unlist(strsplit(all.chi.rslts$measure, "[.]"))[ c(T,F)]
+all.chi.rslts$explanatory_var <- unlist(strsplit(all.chi.rslts$measure, "[.]"))[ c(F,T)]
 
 all.chi.rslts <- all.chi.rslts[c("X", "N", "response_var", "explanatory_var",
                                  "no.pve", "no.nve", "chi.sqr", "p.val", "no.sig.pve",
@@ -72,8 +72,8 @@ write.csv(all.chi.rslts, file <- "../Results/ChiSqr_Results.csv", row.names = F)
 
 all.wlcx.rslts <- all.wlcx.rslts[-1, ]  # remove top row of NAs
 
-all.wlcx.rslts$explanatory_var <- unlist(strsplit(all.wlcx.rslts$measure, "[.]"))[ c(T,F)]
-all.wlcx.rslts$response_var    <- unlist(strsplit(all.wlcx.rslts$measure, "[.]"))[ c(F,T)]
+all.wlcx.rslts$response_var    <- unlist(strsplit(all.wlcx.rslts$measure, "[.]"))[ c(T,F)]
+all.wlcx.rslts$explanatory_var <- unlist(strsplit(all.wlcx.rslts$measure, "[.]"))[ c(F,T)]
 
 all.wlcx.rslts <- all.wlcx.rslts[c("X", "N", "response_var", "explanatory_var",
                                    "no.slopes", "median", "q0.05", "q0.95", "wlcx.V",
@@ -88,31 +88,19 @@ write.csv(all.wlcx.rslts, file <- "../Results/Wilcox_Results.csv", row.names = F
 ###############################################################################
 
 # subset to only X = 3, N = 20
-tbl2_chsqr <- subset(all.chi.rslts, X == 3 & N == 20)
-
-# needed columns in the right order
-tbl2_chsqr <- tbl2_chsqr[c("response_var", "explanatory_var", "no.pve", "no.nve",
-                           "chi.sqr", "p.val", "no.sig.pve", "no.sig.nve",
-                           "sig.chi.sqr", "sig.p.val")]
-
-# put in a neat order FFD, LFD, FP, Fpos
-tbl2_chsqr <- tbl2_chsqr[c(1, 5, 17, 13, 9, 2, 6, 18, 14, 10, 3, 7, 19, 15, 11,
-                           4, 8, 20, 16, 12), ]
+tbl2_chsqr <- subset(all.chi.rslts, X == 3 & N == 20,
+                     select = c("response_var", "explanatory_var", "no.pve",
+                                "no.nve", "chi.sqr", "p.val", "no.sig.pve",
+                                "no.sig.nve", "sig.chi.sqr", "sig.p.val"))
 
 write.csv(tbl2_chsqr, file = "../Results/Table2_chisqr.csv", row.names = F)  # save
 
 # **Actually going with Wilcoxon signed ranks test**
 
-tbl2_wlcx <- subset(all.wlcx.rslts, X == 3 & N == 20)
-
-# needed columns in the right order
-tbl2_wlcx <- tbl2_wlcx[c("response_var", "explanatory_var", "no.slopes", "median",
-                         "q0.05", "q0.95", "wlcx.V", "wlcx.p", "sig_no.slopes",
-                         "sig_median", "sig_q0.05", "sig_q0.95", "sig_wlcx.V",
-                         "sig_wlcx.p")]
-
-# put in a neat order FFD, LFD, FP, Fpos
-tbl2_wlcx <- tbl2_wlcx[c(1, 5, 17, 13, 9, 2, 6, 18, 14, 10, 3, 7, 19, 15, 11,
-                           4, 8, 20, 16, 12), ]
+tbl2_wlcx <- subset(all.wlcx.rslts, X == 3 & N == 20,
+                    selct = c("response_var", "explanatory_var", "no.slopes",
+                              "median", "q0.05", "q0.95", "wlcx.V", "wlcx.p",
+                              "sig_no.slopes", "sig_median", "sig_q0.05",
+                              "sig_q0.95", "sig_wlcx.V", "sig_wlcx.p"))
 
 write.csv(tbl2_wlcx, file = "../Results/Table2_wlcx.csv", row.names = F)  # save
