@@ -79,8 +79,8 @@ all.wlcx.rslts$explanatory_var <- unlist(strsplit(all.wlcx.rslts$measure, "[.]")
 all.wlcx.rslts <- all.wlcx.rslts[c("X", "N", "response_var", "explanatory_var",
                                    "no.slopes", "q0.05", "q0.25", "median", "q0.75",
                                    "q0.95", "wlcx.V", "wlcx.p", "sig_no.slopes",
-                                   "sig_median", "sig_q0.05", "sig_q0.95",
-                                   "sig_wlcx.V", "sig_wlcx.p")]
+                                   "sig_q0.05", "sig_q0.25", "sig_median", "sig_q0.75",
+                                   "sig_q0.95", "sig_wlcx.V", "sig_wlcx.p")]
 
 write.csv(all.wlcx.rslts, file <- "../Results/Wilcox_Results.csv", row.names = F)  # save
 
@@ -102,7 +102,8 @@ write.csv(tbl2_chsqr, file = "../Results/Table2_chisqr.csv", row.names = F)  # s
 tbl2_wlcx <- subset(all.wlcx.rslts, X == 3 & N == 20,
                     select = c("response_var", "explanatory_var", "no.slopes",
                                "q0.05", "q0.25", "median", "q0.75", "q0.95",
-                               "wlcx.V", "wlcx.p", "sig_no.slopes", "sig_median",
-                               "sig_q0.05", "sig_q0.95", "sig_wlcx.V", "sig_wlcx.p"))
+                               "wlcx.V", "wlcx.p", "sig_no.slopes", "sig_q0.05",
+                               "sig_q0.25", "sig_median","sig_q0.75","sig_q0.95",
+                               "sig_wlcx.V", "sig_wlcx.p"))
 
 write.csv(tbl2_wlcx, file = "../Results/Table2_wlcx.csv", row.names = F)  # save

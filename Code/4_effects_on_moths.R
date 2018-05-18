@@ -127,8 +127,8 @@ for (x in msr){ for (y in expl){
 
 # headers of the chi.rslts dataframe
 hdrs <- c("no.slopes", "q0.05", "q0.25", "median", "q0.75", "q0.95", "wlcx.V",
-          "wlcx.p", "sig_no.slopes", "sig_median", "sig_q0.05", "sig_q0.95",
-          "sig_wlcx.V", "sig_wlcx.p")
+          "wlcx.p", "sig_no.slopes", "sig_q0.05", "sig_q0.25", "sig_median",
+          "sig_q0.75", "sig_q0.95", "sig_wlcx.V", "sig_wlcx.p")
 
 # wlcx.rslts is a dataframe with those headers
 wlcx.rslts <- data.frame('measure' = tocalc)
