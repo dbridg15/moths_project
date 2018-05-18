@@ -126,8 +126,9 @@ for (x in msr){ for (y in expl){
   tocalc <- c(tocalc, paste0(x, ".", y)) }}
 
 # headers of the chi.rslts dataframe
-hdrs <- c("no.slopes", "median", "q0.05", "q0.95", "wlcx.V", "wlcx.p", "sig_no.slopes",
-          "sig_median", "sig_q0.05", "sig_q0.95", "sig_wlcx.V", "sig_wlcx.p")
+hdrs <- c("no.slopes", "q0.05", "q0.25", "median", "q0.75", "q0.95", "wlcx.V",
+          "wlcx.p", "sig_no.slopes", "sig_median", "sig_q0.05", "sig_q0.95",
+          "sig_wlcx.V", "sig_wlcx.p")
 
 # wlcx.rslts is a dataframe with those headers
 wlcx.rslts <- data.frame('measure' = tocalc)
@@ -135,17 +136,21 @@ for (i in hdrs){
   wlcx.rslts[i] <- NA
 }
 
-wlcx.rslts$no.slopes <- nrow(ss.df)
 
 # cleanup
 rm(hdrs, tocalc)
+
+# number of 'all slopes'
+wlcx.rslts$no.slopes <- nrow(ss.df)
 
 # go throgh each row of chi.rslts and do the needed calculations
 for (i in 1:nrow(wlcx.rslts)){
   # for all slopes
 
-  wlcx.rslts$median[i] <- quantile(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")], 0.5)   # median
   wlcx.rslts$q0.05[i]  <- quantile(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")], 0.05)  # 0.05 quantile
+  wlcx.rslts$q0.25[i]  <- quantile(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")], 0.25)  # 0.25 quantile
+  wlcx.rslts$median[i] <- quantile(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")], 0.5)   # median
+  wlcx.rslts$q0.75[i]  <- quantile(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")], 0.75)  # 0.75 quantile
   wlcx.rslts$q0.95[i]  <- quantile(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")], 0.95)  # 0.95 quantile
 
   wlcx.rslts$wlcx.V[i] <- wilcox.test(ss.df[,paste0(wlcx.rslts$measure[i], ".slope")])$statistic  # wilcox V stat
@@ -158,10 +163,14 @@ for (i in 1:nrow(wlcx.rslts)){
   if (length(sig.list) > 0){  # if there were significant slopes
 
     wlcx.rslts$sig_no.slopes[i] <- length(sig.list)
-    wlcx.rslts$sig_median[i]    <- quantile(ss.df[sig.list,
-                                            paste0(wlcx.rslts$measure[i],".slope")], 0.5)    # median
     wlcx.rslts$sig_q0.05[i]     <- quantile(ss.df[sig.list,
                                             paste0(wlcx.rslts$measure[i], ".slope")], 0.05)  # 0.05 quantile
+    wlcx.rslts$sig_q0.25[i]     <- quantile(ss.df[sig.list,
+                                            paste0(wlcx.rslts$measure[i], ".slope")], 0.25)  # 0.25 quantile
+    wlcx.rslts$sig_median[i]    <- quantile(ss.df[sig.list,
+                                            paste0(wlcx.rslts$measure[i],".slope")], 0.5)    # median
+    wlcx.rslts$sig_q0.75[i]     <- quantile(ss.df[sig.list,
+                                            paste0(wlcx.rslts$measure[i], ".slope")], 0.75)  # 0.75 quantile
     wlcx.rslts$sig_q0.95[i]     <- quantile(ss.df[sig.list,
                                             paste0(wlcx.rslts$measure[i], ".slope")], 0.95)  # 0.95 quantile
 

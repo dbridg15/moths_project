@@ -21,9 +21,10 @@ all.chi.rslts  <- data.frame("X" = NA, "N" = NA, "measure" = NA, "no.pve" = NA,
                              "sig.chi.sqr" = NA, "sig.p.val" = NA)
 
 all.wlcx.rslts <- data.frame("X" = NA, "N" = NA, "measure" = NA, "no.slopes" = NA,
-                             "median" = NA, "q0.05" = NA, "q0.95" = NA, "wlcx.V" = NA,
-                             "wlcx.p" = NA, "sig_no.slopes" = NA, "sig_median" = NA,
-                             "sig_q0.05" = NA, "sig_q0.95" = NA, "sig_wlcx.V" = NA,
+                             "q0.05" = NA, "q0.25" = NA, "median" = NA, "q0.75" = NA,
+                             "q0.95" = NA, "wlcx.V" = NA, "wlcx.p" = NA, "sig_no.slopes" = NA,
+                             "sig_q0.05" = NA, "sig_q0.25" = NA, "sig_median" = NA,
+                             "sig_q0.75" = NA, "sig_q0.95" = NA, "sig_wlcx.V" = NA,
                              "sig_wlcx.p" = NA)
 
 
@@ -76,9 +77,10 @@ all.wlcx.rslts$response_var    <- unlist(strsplit(all.wlcx.rslts$measure, "[.]")
 all.wlcx.rslts$explanatory_var <- unlist(strsplit(all.wlcx.rslts$measure, "[.]"))[ c(F,T)]
 
 all.wlcx.rslts <- all.wlcx.rslts[c("X", "N", "response_var", "explanatory_var",
-                                   "no.slopes", "median", "q0.05", "q0.95", "wlcx.V",
-                                   "wlcx.p", "sig_no.slopes", "sig_median", "sig_q0.05",
-                                   "sig_q0.95", "sig_wlcx.V", "sig_wlcx.p")]
+                                   "no.slopes", "q0.05", "q0.25", "median", "q0.75",
+                                   "q0.95", "wlcx.V", "wlcx.p", "sig_no.slopes",
+                                   "sig_median", "sig_q0.05", "sig_q0.95",
+                                   "sig_wlcx.V", "sig_wlcx.p")]
 
 write.csv(all.wlcx.rslts, file <- "../Results/Wilcox_Results.csv", row.names = F)  # save
 
@@ -98,9 +100,9 @@ write.csv(tbl2_chsqr, file = "../Results/Table2_chisqr.csv", row.names = F)  # s
 # **Actually going with Wilcoxon signed ranks test**
 
 tbl2_wlcx <- subset(all.wlcx.rslts, X == 3 & N == 20,
-                    selct = c("response_var", "explanatory_var", "no.slopes",
-                              "median", "q0.05", "q0.95", "wlcx.V", "wlcx.p",
-                              "sig_no.slopes", "sig_median", "sig_q0.05",
-                              "sig_q0.95", "sig_wlcx.V", "sig_wlcx.p"))
+                    select = c("response_var", "explanatory_var", "no.slopes",
+                               "q0.05", "q0.25", "median", "q0.75", "q0.95",
+                               "wlcx.V", "wlcx.p", "sig_no.slopes", "sig_median",
+                               "sig_q0.05", "sig_q0.95", "sig_wlcx.V", "sig_wlcx.p"))
 
 write.csv(tbl2_wlcx, file = "../Results/Table2_wlcx.csv", row.names = F)  # save
