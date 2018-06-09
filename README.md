@@ -1,8 +1,8 @@
 # moths_project
 
-Author: David Bridgwood *dbridg15@gmail.com*
+__Author:__ David Bridgwood *dbridg15@gmail.com*
 
-Description: Project to determine if the timing of moth flights (first flight day and last flight day) are being affected by changing climate (specifically temperature).
+__Description:__ Project to determine if the timing of moth flights (first flight day and last flight day) are being affected by changing climate (specifically temperature).
 
 ## Dependencies
 
@@ -19,11 +19,11 @@ The following R packages are required
 Set working directory to moths_project/Code/ and Rscript/source the file 0_run_moths_project.R
 The default has sensitivity Analysis turned off and take aprox 5 mins to run. With sensitivity analysis on (see below). Run time is >30mins.
 
-In R
+__In R__
 
 	source 0_run_moths_project.R
 
-In terminal
+__In terminal__
 
 	Rscript  0_run_moths_project.R
 
